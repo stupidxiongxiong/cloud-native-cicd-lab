@@ -1,0 +1,195 @@
+# ============================================================
+# Day 6 应用搬上 K8s —— 资源清单（逐行白话注释版）
+# ------------------------------------------------------------
+# 一句话目的：把 Day 4 单机 docker compose 跑的「Flask 待办应用 + MySQL」
+#             用 K8s 的方式重新部署一遍。Day 6 干的所有事，本质就这一件。
+# 命名空间：todo（所有资源都关在里面，以后 kubectl delete ns todo 一键清空）
+# 应用镜像：harbor.local/pb/app:v1（就是 Day 4 那个 app.py，已 push 到 Harbor）
+# 文件用法：kubectl apply -f day6-todo.yaml  ← 一次性把下面 8 个资源全建好
+# ============================================================
+
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  YAML 语法速成（只看这一遍，下面反复出现的就都懂了）            ║
+# ╠══════════════════════════════════════════════════════════════════╣
+# ║ ① 缩进=层级关系：每向右缩进一级，就表示“它属于上面那一层”。   ║
+# ║    像文件夹套文件夹，缩进决定了谁是谁的子项。顶格写的=最外层。  ║
+# ║ ② 字段写法：key: value（冒号左边是字段名，右边是填的值）      ║
+# ║ ③ ---（单独一行，三个减号）= 资源分隔符。把一份文件切成       ║
+# ║    多个互不相关的资源，apply 时一个一个建。                    ║
+# ║ ④ 四大件：几乎每个 K8s 资源都有这 4 个顶层字段，记住即可：     ║
+# ║      apiVersion → 用 K8s 的哪套接口（v1 是最常用稳定版）        ║
+# ║      kind       → 资源类型（Namespace/Deployment/Secret...）     ║
+# ║      metadata   → 资源的“身份证”：名字(name)和归属(ns)          ║
+# ║      spec       → 核心：“你希望这个资源长什么样”的配置区        ║
+# ║ ⑤ - 横杠 = 列表里的一项（可以有多个 - 项并列，如多个容器）     ║
+# ║ ⑥ {a: b, c: d} = 一行写完的“小字典”，和缩进多行写法完全等价    ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+
+# ---------- 1. 命名空间 Namespace ----------
+# 作用：建一个叫 todo 的“隔离小房间”，后面所有资源都放里面，互不干扰。
+apiVersion: v1                  # ① 用第 1 版 API（最基础那套，Namespace 属于它）
+kind: Namespace                 # ② 资源类型=命名空间（用来隔离/归拢资源）
+metadata:                       # ④ 身份证信息开始
+  name: todo                    #    这个命名空间叫 todo
+
+
+---
+# ---------- 2. ConfigMap：应用的“非机密”配置 ----------
+# 作用：把数据库地址、库名这类“不保密但要外置”的配置单独存着，
+#       改配置不用重新打包镜像。容器运行时按 key 读取值。
+apiVersion: v1                  # ① 还是最基础那套 API
+kind: ConfigMap                 # ② 资源类型=配置字典
+metadata:
+  name: todo-config             #    名字叫 todo-config
+  namespace: todo               #    放在 todo 命名空间（写错地方容器就读不到）
+data:                           # ConfigMap 的核心：一组“键→值”配置
+  DB_HOST: mysql                #    数据库主机名=mysql（指向下面第 6 块建的 mysql 服务）
+  DB_NAME: pb                   #    数据库名=pb（和 Day 4 约定一致）
+
+
+---
+# ---------- 3. Secret：MySQL 密码等“机密” ----------
+# 作用：和 ConfigMap 类似，但专门存密码。K8s 会对它做编码保护，
+#       并且默认不显示在普通列表里。注意：它给“容器当环境变量”用，
+#       和“拉镜像用的 harbor-pull”是两个不同的 Secret，别混。
+apiVersion: v1
+kind: Secret
+metadata:
+  name: todo-secret             # 名字 todo-secret
+  namespace: todo               # 同样必须在 todo 里
+type: Opaque                    # 类型 Opaque=最普通的键值密码（够用了）
+stringData:                     # stringData 字段：你直接写明文，K8s 自动帮你编码
+  DB_USER: pb                   #   业务数据库账户=pb（Day 4 约定）
+  DB_PASS: <db_password>             #   业务数据库密码（部署时填入）
+  MYSQL_ROOT_PASSWORD: <mysql_root_password>  # MySQL root 密码（部署时填入）
+
+
+---
+# ---------- 4. PVC：MySQL 的持久化存储申请 ----------
+# 作用：MySQL 是“有状态”的，数据必须落盘。PVC 就是“我要 1G 存储”的
+#       申请书；装了 local-path-provisioner 后系统会自动在节点本地划
+#       一块目录当存储给你（动态供给），Pod 重建数据不丢。
+apiVersion: v1
+kind: PersistentVolumeClaim     # 资源类型=持久化存储申请（PVC）
+metadata:
+  name: mysql-pvc               # 名字 mysql-pvc
+  namespace: todo
+spec:                           # 你“想要”的存储规格
+  accessModes: ["ReadWriteOnce"]  # ⑤ 访问模式：单节点可读写（local-path 只支持这一种）
+  storageClassName: local-path  # 用哪个 StorageClass 来供给（必须显式写！否则 PVC 会 Pending，见坑①）
+  resources:                    # 资源请求
+    requests:
+      storage: 1Gi              # 申请 1GB 空间
+
+
+---
+# ---------- 5. MySQL Deployment（单副本） ----------
+# 作用：Deployment 是“让 Pod 按我说的样子稳定运行”的控制器。
+#       这里定义 MySQL 容器怎么跑、环境变量怎么来、数据挂到哪。
+apiVersion: apps/v1             # 注意：Deployment 属于 apps 这套 API，不是 v1
+kind: Deployment
+metadata:
+  name: mysql                   # 这个 Deployment 叫 mysql
+  namespace: todo
+spec:
+  replicas: 1                   # 副本数=1（只跑一个 MySQL 实例）
+  selector:                     # 选择器：Deployment 用“标签”认领它管的 Pod
+    matchLabels:
+      app: mysql                #   认领标签为 app=mysql 的 Pod（见下面 template 里的 labels）
+  template:                     # Pod 模板：Deployment 照着这个模板去创建 Pod
+    metadata:
+      labels:
+        app: mysql              # 给 Pod 打上标签 app=mysql（上面 selector 靠它认领；Service 也靠它找 Pod）
+    spec:                       # Pod 内部的具体规格
+      containers:               # ⑤ 容器列表（这里只有一个 mysql 容器）
+      - name: mysql             # 容器名字叫 mysql
+        image: mysql:8.0        # 用的镜像=mysql:8.0（来自 docker.io，经 Day5 配的 Daocloud 镜像拉）
+        env:                    # 环境变量列表（注入给容器里的 MySQL 进程）
+        - name: MYSQL_ROOT_PASSWORD        # 变量名
+          valueFrom:                        # 值不是写死，而是“从别处取”
+            secretKeyRef: {name: todo-secret, key: MYSQL_ROOT_PASSWORD}  # ⑥ 从 todo-secret 这个 Secret 取 MYSQL_ROOT_PASSWORD 的值
+        - name: MYSQL_DATABASE             # 变量名：初始化时自动建库
+          value: pb                        # 直接写死值=pb（让 MySQL 启动就建好 pb 库）
+        - name: MYSQL_USER                 # 变量名：自动建业务账户
+          valueFrom: {secretKeyRef: {name: todo-secret, key: DB_USER}}  # 从 Secret 取账户名=pb
+        - name: MYSQL_PASSWORD             # 变量名：业务账户密码
+          valueFrom: {secretKeyRef: {name: todo-secret, key: DB_PASS}} # 从 Secret 取密码（部署时填入）
+        ports:                    # 容器暴露的端口
+        - containerPort: 3306     # MySQL 默认端口 3306
+        volumeMounts:             # 把存储“挂”进容器
+        - name: data              # 挂接名为 data 的卷（定义见下面 volumes）
+          mountPath: /var/lib/mysql  # 挂到容器里 MySQL 的数据目录（数据落这里，Pod 重建不丢）
+      volumes:                    # Pod 用的“卷”定义（存储来源）
+      - name: data                # 卷名叫 data（和上面 volumeMounts.name 对应）
+        persistentVolumeClaim:    # 这个卷的来源=前面申请的那块 PVC
+          claimName: mysql-pvc    # 用名为 mysql-pvc 的存储申请
+
+
+---
+# ---------- 6. MySQL Service（集群内部访问入口） ----------
+# 作用：Pod 的 IP 会变，Service 给 MySQL 一个“固定名字+固定虚拟 IP”，
+#       让 app 容器用“mysql”这个名字就能连上数据库（K8s 内部 DNS 自动解析）。
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql                    # 服务名叫 mysql → 所以 app 里 DB_HOST=mysql 能解析到它
+  namespace: todo
+spec:
+  selector:                      # Service 用标签找后端 Pod
+    app: mysql                   # 把流量转发给标签 app=mysql 的 Pod（就是上面那个 MySQL Pod）
+  ports:                         # 端口映射
+  - port: 3306                   # Service 对外暴露的端口（集群内访问用这个）
+    targetPort: 3306             # 转发到 Pod 的 3306
+
+
+---
+# ---------- 7. Flask 应用 Deployment ----------
+# 作用：和 MySQL 的 Deployment 同理，这里管的是你的 Flask 待办应用容器。
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app                      # 这个 Deployment 叫 app
+  namespace: todo
+spec:
+  replicas: 1                    # 副本数=1
+  selector:
+    matchLabels: {app: app}      # ⑥ 认领标签 app=app 的 Pod（一行写法，等价于缩进多行）
+  template:
+    metadata:
+      labels:
+        app: app                 # 给 Pod 打标签 app=app（Service 和 kubectl -l app=app 都靠它）
+    spec:
+      imagePullSecrets:          # 拉镜像前先用的“提货凭证”
+      - name: harbor-pull        # 用命令建的 harbor-pull 这个 Secret（不在本文件），让 kubelet 从 Harbor 私有库拉 app:v1
+      containers:
+      - name: app                # 容器名叫 app
+        image: harbor.local/pb/app:v1  # 应用镜像：Harbor 里 pb 项目的 app:v1（即 Day4 的 Flask 应用）
+        env:                     # 把数据库配置注入容器，Flask 才能连库
+        - name: DB_HOST
+          valueFrom: {configMapKeyRef: {name: todo-config, key: DB_HOST}}   # 从 ConfigMap 取= mysql
+        - name: DB_NAME
+          valueFrom: {configMapKeyRef: {name: todo-config, key: DB_NAME}}   # 从 ConfigMap 取= pb
+        - name: DB_USER
+          valueFrom: {secretKeyRef: {name: todo-secret, key: DB_USER}}      # 从 Secret 取= pb
+        - name: DB_PASS
+          valueFrom: {secretKeyRef: {name: todo-secret, key: DB_PASS}}      # 从 Secret 取（部署时填入）
+        ports:
+        - containerPort: 5000     # Flask 监听端口 5000
+
+
+---
+# ---------- 8. Flask 应用 Service ----------
+# 作用：和 MySQL Service 同理，给 Flask 一个固定访问入口（集群内）。
+apiVersion: v1
+kind: Service
+metadata:
+  name: app                      # 服务名叫 app
+  namespace: todo
+spec:
+  selector:
+    app: app                     # 转发给标签 app=app 的 Pod
+  ports:
+  - port: 5000                   # Service 端口 5000
+    targetPort: 5000             # 转发到 Pod 的 5000

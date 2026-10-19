@@ -1,0 +1,29 @@
+# harbor.yml 关键字段对照（在 B 机 /usr/local/harbor/ 下，
+# 先 `cp harbor.yml.tmpl harbor.yml` 再改下面几处）
+#
+# 注意：原文件里 https 段默认是注释掉的，要取消注释并填路径。
+# 其余字段（数据库、日志等）保持默认即可，不用动。
+
+# ① 主机名：必须和证书域名、客户端 hosts 解析一致
+hostname: harbor.local
+
+# ② HTTPS 段（取消注释，填刚刚生成的证书路径）
+https:
+  # https port for harbor, default is 443
+  port: 443
+  # The path of cert and key files for nginx
+  certificate: /usr/local/harbor/cert/harbor.local.crt
+  private_key: /usr/local/harbor/cert/harbor.local.key
+
+# ③ 管理员密码（自己设一个强密码，别用默认 Harbor12345）
+harbor_admin_password: 改成你自己的强密码
+
+# ④ 数据卷（默认 /data，B 机磁盘够就不用改）
+# data_volume: /data
+
+# ---- 以下保持默认，不用改 ----
+# database:
+#   password: root123
+#   max_idle_conns: 100
+#   max_open_conns: 900
+# ...

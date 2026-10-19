@@ -1,0 +1,4 @@
+{
+  "registry-mirrors": ["https://swr.cn-north-4.myhuaweicloud.com"],
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}

@@ -1,0 +1,52 @@
+# ============================================================
+#  docker-compose.yml
+#  作用：把"自制主菜(todo-app) + 现成甜品(mysql:8)"拼成一桌套餐一起跑
+#  用法：在 /soft/app 目录执行  docker compose up -d --build
+#        （--build 会按同目录的 Dockerfile 现场构建 app 镜像）
+# ============================================================
+
+services:
+
+  # ---------- 服务1：你的 Flask 应用（用本地 Dockerfile 现场构建）----------
+  app:
+    build: .                         # 关键：读当前目录的 Dockerfile 构建镜像
+                                      #   （等价于你手动敲的 `docker build -t todo-app .`）
+    container_name: pb-app           # 容器的"显示名"(docker ps 看到的 NAMES)，方便 docker logs pb-app / docker exec -it pb-app sh
+                                      #   与上面 services 下的服务名 app 是两回事；pb- 前缀与你的 Harbor 私有库(pb)统一风格
+    ports:
+      - "5000:5000"                  # 宿主机5000端口 -> 容器5000（浏览器访问 A机IP:5000）
+    environment:                     # 注入环境变量，对应 app.py 里 os.environ.get(...) 读取
+      - DB_HOST=mysql                # 数据库主机名 = 下面 mysql 服务的"服务名"
+                                      #   compose 会自动建网络，服务名可直接当域名用
+      - DB_USER=pb                   # 必须与下面 mysql 的 MYSQL_USER 一致
+      - DB_PASS=<db_password>             # 必须与下面 mysql 的 MYSQL_PASSWORD 一致
+      - DB_NAME=pb                   # 必须与下面 mysql 的 MYSQL_DATABASE 一致
+    depends_on:
+      mysql:
+        condition: service_healthy   # 等 mysql 真正"健康"后才启动 app
+                                      #   （避免 app 先起、连不上库而报错）
+    restart: unless-stopped
+
+  # ---------- 服务2：MySQL（直接用官方镜像，不用你 build）----------
+  mysql:
+    image: mysql:8                   # 官方 mysql 镜像（相当于"外购现成甜品"，不写 Dockerfile）
+    container_name: pb-mysql         # 显示名；注意下面 services 的服务名仍是 mysql（app 靠 DB_HOST=mysql 连它），别改服务名
+    environment:
+      - MYSQL_ROOT_PASSWORD=<mysql_root_password>  # root 密码（生产环境要改复杂）
+      - MYSQL_DATABASE=pb               # 自动建一个名为 pb 的库（app.py 连的就是它）
+      - MYSQL_USER=pb                   # 建一个普通用户 pb
+      - MYSQL_PASSWORD=<db_password>         # pb 用户密码（必须和上面 app 的 DB_PASS 一致）
+    volumes:
+      - mysql-data:/var/lib/mysql    # 挂数据卷：容器删了数据也不丢（关键！）
+    healthcheck:                     # 健康检查：用 mysqladmin ping 测数据库是否就绪
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p<mysql_root_password>"]
+      interval: 10s                  # 每 10 秒测一次
+      timeout: 5s                    # 单次超时 5 秒
+      retries: 5                     # 连续失败 5 次才判定不健康
+    restart: unless-stopped
+
+# ---------- 命名数据卷：mysql 数据持久化 ----------
+# 上面 mysql 的 volumes 引用了它；不写这行 compose 也会自动建匿名卷，
+# 但写成具名卷更清晰、方便管理。
+volumes:
+  mysql-data:

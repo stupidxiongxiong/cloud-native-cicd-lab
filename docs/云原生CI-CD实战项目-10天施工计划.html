@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="zQM4jSCyOAZkNlzrvVz2J2">
+<head data-page-node-id="9nnbf4sclMP5Ehv2a7gqWE">
+<meta charset="utf-8" data-page-node-id="yLTMMYVxWmqqWFaVVmM9hW">
+<title>云原生 CI/CD 实战项目 · 10 天施工计划</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f6f2; --border:#e2e0d8; --border2:#c9c6bb;
+    --text:#2c2c2a; --muted:#5f5e5a; --hint:#888780;
+    --blue:#185fa5; --blue-bg:#e6f1fb; --blue-tx:#0c447c;
+    --teal:#0f6e56; --teal-bg:#e1f5ee; --teal-tx:#085041;
+    --amber:#854f0b; --amber-bg:#faeeda;
+    --red:#a32d2d; --red-bg:#fcebeb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:28px 18px 70px;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Microsoft YaHei","PingFang SC",sans-serif;
+    font-size:14px;line-height:1.7}
+  .wrap{max-width:900px;margin:0 auto}
+  h1{font-size:23px;font-weight:500;margin:0 0 4px}
+  .lead{color:var(--muted);font-size:13px;margin:0 0 8px}
+  .meta{color:var(--hint);font-size:12px;margin:0 0 28px}
+  h2{font-size:17px;font-weight:500;margin:38px 0 4px;padding-bottom:8px;border-bottom:2px solid var(--text)}
+  h2 .day{color:var(--hint);font-weight:400;margin-right:8px}
+  .goal{font-size:13px;color:var(--muted);margin:0 0 14px}
+  h3{font-size:13.5px;font-weight:500;margin:18px 0 6px;color:var(--text)}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 10px}
+  th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--surface);font-weight:500;color:var(--muted)}
+  code{font-family:"Cascadia Mono",Consolas,"Courier New",monospace;background:#f2f1ec;
+    padding:1px 5px;border-radius:4px;font-size:12.5px}
+  pre{background:#f7f6f2;border:1px solid var(--border);border-radius:8px;
+    padding:12px 14px;overflow-x:auto;font-size:12.5px;line-height:1.6;margin:6px 0 10px}
+  pre code{background:none;padding:0}
+  ul{margin:6px 0 10px;padding-left:20px}
+  li{margin:3px 0}
+  .chk{list-style:none;padding-left:0}
+  .chk li{padding-left:24px;position:relative;margin:5px 0}
+  .chk input{position:absolute;left:0;top:5px}
+  .box{border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:10px 0;background:#fcfcfb}
+  .box.warn{background:var(--amber-bg);border-color:#e8cfa0}
+  .box.danger{background:var(--red-bg);border-color:#e8b3b3}
+  .box.ok{background:var(--teal-bg);border-color:#9fe1cb}
+  .box.verify{background:var(--blue-bg);border-color:#b5d4f4}
+  .tag{display:inline-block;padding:1px 8px;border-radius:6px;font-size:12px;margin-right:6px}
+  .t-b{background:var(--blue-bg);color:var(--blue-tx)}
+  .t-t{background:var(--teal-bg);color:var(--teal-tx)}
+  .t-a{background:var(--amber-bg);color:var(--amber)}
+  .t-r{background:var(--red-bg);color:var(--red)}
+  .hl-red{color:var(--red);font-weight:600}
+  .hl-green{color:var(--teal);font-weight:600}
+  .note-imp{border-left:4px solid var(--red);background:var(--red-bg);padding:9px 14px;margin:10px 0;border-radius:0 8px 8px 0;font-size:13px;line-height:1.65}
+  .small{font-size:12.5px;color:var(--muted)}
+  @media print{
+    body{padding:0;font-size:11pt}
+    h2{page-break-after:avoid}
+    .box,pre,table{page-break-inside:avoid}
+  }
+  .progbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--border);
+    border-radius:10px;padding:8px 14px;margin:0 0 18px;background:var(--surface);font-size:13px}
+  .progbar button{border:1px solid var(--border2);background:#fff;border-radius:6px;
+    padding:3px 10px;font-size:12px;cursor:pointer;color:var(--text);font-family:inherit}
+  .progbar button:hover{border-color:var(--text)}
+  .progbar .hint{color:var(--hint);font-size:12px}
+  @media print{.progbar{display:none}}
+</style>
+</head>
+<body data-page-node-id="sjjBBJFEKNgn33UCNA5wwL">
+<div class="wrap" data-page-node-id="9heDndNlNF4s8fjieXGeBX">
+<div class="progbar">
+  <span>勾选进度：<strong id="done">0</strong> / <strong id="total">0</strong> 项</span>
+  <button id="reset" type="button">重置全部勾选</button>
+  <span class="hint">勾选会保存在本机浏览器里；换浏览器或换电脑不同步，打印成 PDF 可固化进度</span>
+</div>
+
+
+<h1 data-page-node-id="EpKbEz5B9abrR5mRlDCcoA">云原生 CI/CD 实战项目 · 10 天施工计划</h1>
+<p class="lead" data-page-node-id="3afEiSaj3R9S4qgBMf0jEB">4 台虚拟机 · Jenkins + Kubernetes + Harbor + Prometheus + Nginx · 目标：代码提交 3 分钟内自动上线</p>
+<p class="meta" data-page-node-id="rFja7oILtHNoAW6IE6rGOd">配套文件：云原生CI-CD架构图.html ｜ 说明：本计划是<strong data-page-node-id="rfiAluqW6CUpAhiaCaM4cc">学习路线图</strong>，不是工期承诺；标注「新学」的部分需要你单独花时间攻克，卡住属正常</p>
+
+<div class="box danger" data-page-node-id="yrdmIDFVUS0m7aGwidAYaa">
+<strong data-page-node-id="LAysAsWUkekdlQ3zRN2ope">开工前必须拍板的三件事（改了会推倒重来）</strong>
+<ul data-page-node-id="YnlmjJiF5oAkshU1EFmne8">
+<li data-page-node-id="2aW70Y0bnft67yY8cxjm7e"><strong data-page-node-id="i2YL41zxoCECcNYoS6uUf7">操作系统已定：<code>Rocky Linux 10.2</code>（内核 6.12），4 台已装好，不重装。</strong>别再按 Rocky 9 的教程找 9.x 的源了。99% 的命令与 Rocky 9 通用，差别只在<strong>软件源路径里那个数字</strong>（如 docker-ce 走 <code>centos/10</code>）。</li>
+<li data-page-node-id="Kf6Ryuq0IZiwKKQH4CnQoM"><strong data-page-node-id="6gTsThrEoSYVtJQjfNtunW">Calico 的 Pod 网段必须改成 <code data-page-node-id="yrORdtHYIoHufyz0FMuSl9">10.244.0.0/16</code>。</strong>它的默认值 <code data-page-node-id="7QdA0AVBjsxBG2oG5n4HBk">192.168.0.0/16</code> 会撞上 VMware NAT 网段，这个冲突要到第 5 天才爆，但第 0 天就得定好。</li>
+<li data-page-node-id="Kf6Ryuq0IZiwKKQH4CnQoN"><strong>Docker 必须走阿里云 docker-ce 镜像，K8s 走阿里云 kubernetes 镜像。</strong>实测 <code>download.docker.com</code> 在你这边<strong>完全连不通</strong>（返回 000），<code>pkgs.k8s.io</code> 也只是 302 跳转。这两个源别按官方教程配，直接抄本手册里的阿里云地址。</li>
+</ul>
+</div>
+
+
+<h2 data-page-node-id="ksHylX38iqDf8ZDBDuKT5b"><span class="day" data-page-node-id="GrMAwvRPMYhQUQ6byf0bfV">00</span>项目参数表（一次定死，全文引用）</h2>
+<p class="goal" data-page-node-id="NC3YgeTDiqsQQKM3a4U2wa">后面 10 天所有命令都引用这张表。VMware NAT 网段以你本机「编辑 → 虚拟网络编辑器」里看到的为准，下表按 <code data-page-node-id="UxhEKVC8L6gyCi07jdhQ46">192.168.80.0/24</code> 举例。</p>
+<table data-page-node-id="gqy8fPQGGMxIBjzf9Pn8Eq">
+<tr data-page-node-id="xx7pmVpCIGxqeXvEE7B1s9"><th data-page-node-id="PsLhzJSbQnFqrM5c7hoNTI">机器</th><th data-page-node-id="LTJF5WqpDCODGEGqQtLC1n">角色</th><th data-page-node-id="y5KRMnZ96xH3qwT8gcuUY0">主机名</th><th data-page-node-id="db7sMB2kBBEqgBCnzo6bpQ">IP</th><th data-page-node-id="K5KHvLYMYzhTzLEffcYkWG">vCPU</th><th data-page-node-id="zFykADRCLRg9w5TlZ4FVgT">内存</th><th data-page-node-id="0hxFF57JTR83nncQ1mbWBk">磁盘</th><th data-page-node-id="LqnrYph2vyAD3NDTlDoLAP">存放位置</th></tr>
+<tr data-page-node-id="IMou2Tv6yCq9PhwjsExshK"><td data-page-node-id="5a3PQ2WPDemms5WBy3C1d5">A</td><td data-page-node-id="1d8ucQ4kGivrostIWFgQaj">Jenkins</td><td data-page-node-id="gFpMiP5CAHRp0Es8nTJxSY"><code data-page-node-id="BdviBg4hH8t7rl5wPhsk7D">jenkins</code></td><td data-page-node-id="oJ2oQ6WdurAxhGcLmYHjMZ"><code data-page-node-id="7AzS4icljrojQU8EZKxwHy">192.168.80.10</code></td><td data-page-node-id="3Jr3W7Tcsp5kvZf1O8oVvz">2</td><td data-page-node-id="93q8Vk8zg7QL4hiVd3sP8S">3 GB</td><td data-page-node-id="UNjpzMnGZLvnCyfcw3F0Ti">30 GB</td><td data-page-node-id="RujGWmSBIWvYBhtfbPurrW">D 盘</td></tr>
+<tr data-page-node-id="r94Y4F5hZjYJcvmU0LgKPI"><td data-page-node-id="OqBquGuqrJ0wZ9YqDdv22i">B</td><td data-page-node-id="zA2IO1MPW2uVrOGK0EONK7">K8s Master + Harbor</td><td data-page-node-id="wlGGEHDzW5xWH7TNfKM4O0"><code data-page-node-id="J3iP8owQEZUekduHLWZ793">master</code></td><td data-page-node-id="iBj9X3AIMSGSmWfc1q6f8d"><code data-page-node-id="rU8evEKA0Q9dACpQSnk1vf">192.168.80.20</code></td><td data-page-node-id="96XNrIg5eSanszPavfDimE">2</td><td data-page-node-id="3NevZPAd89ZON1KToO8vef"><strong data-page-node-id="SGG1BIcEcVn9tjskjvLaPj">5 GB</strong></td><td data-page-node-id="ijXniOleOuQNX9bhP7nZEi">40 GB</td><td data-page-node-id="myMfiYP9efIfwJwhDOLbMR">D 盘</td></tr>
+<tr data-page-node-id="AYNhNBnxRmW4ziOouiFmzr"><td data-page-node-id="dfJsJABkTl7hBFAYGssCpl">C</td><td data-page-node-id="VrKslsX6X0De5bsQaLgQjs">K8s Worker1</td><td data-page-node-id="MLQyd1YekcJyQWfCwv6Q5C"><code data-page-node-id="BoVEbFHPpmPNAFjXqjNtiz">worker1</code></td><td data-page-node-id="es7s2LdNNEvCtUyiKSucjM"><code data-page-node-id="qNEKGtFk6B1PbWzjnrALmW">192.168.80.21</code></td><td data-page-node-id="Ku9xfaTcjnYgPiwfYOhybz">2</td><td data-page-node-id="kEvOEtVcruIB9tqssLSoPJ">3 GB</td><td data-page-node-id="2BX0Xz7rkMN0sKQOSptOO6">30 GB</td><td data-page-node-id="LKBLlCTkxz6KnKr3yVAkVM">E 盘</td></tr>
+<tr data-page-node-id="wYssEZNeHC5X9AqGYwucNG"><td data-page-node-id="GUBGEJBia0U1XPJBJOBlJt">D</td><td data-page-node-id="TAXl39PTy52QGXcH2t6bGt">K8s Worker2</td><td data-page-node-id="yBZtJZFwNSy2sIX5TIBTOI"><code data-page-node-id="t8VwmHBbfHkCDudNWhD82M">worker2</code></td><td data-page-node-id="hWojCaUvoYFLDNY6gNUhMS"><code data-page-node-id="br9gBceXiiB9rEXmOZKpD1">192.168.80.22</code></td><td data-page-node-id="PyfTGvsXuA73NYA5zDpopF">2</td><td data-page-node-id="4lr0Bx8KQFgHiu8tCW6ocB">3 GB</td><td data-page-node-id="E8w8sDffcY2vDeRkEr9Odd">30 GB</td><td data-page-node-id="Nq3Q9eqODubtlgO8VPaxDQ">E 盘</td></tr>
+</table>
+<table data-page-node-id="cfgivC9HbqtV44yPddv3Bp">
+<tr data-page-node-id="XlbEVGsUqbTVCs6HjMslBG"><th data-page-node-id="EBZbu8QiqYqdgLDUpIbDnI">参数</th><th data-page-node-id="OhcsFgqBNAPECZyUK9EeJe">取值</th><th data-page-node-id="gkflUW13TtL4mA8th6wClx">备注</th></tr>
+<tr data-page-node-id="Arlh3VraXFdGtXTqrDppmG"><td data-page-node-id="YP3TOOyjkjoQeOIIjhSARI">操作系统</td><td data-page-node-id="P88vlCxZ2kkE486lk1Gkfp"><strong>Rocky Linux 10.2</strong>（Red Quartz）<br>内核 6.12.0</td><td data-page-node-id="i6Gjub4K9rAvMJg0aatB1u">已装好 4 台，Minimal 最小化安装</td></tr>
+<tr data-page-node-id="5bUc6eCXeKPUGW64kyaCz8"><td data-page-node-id="aCOIcpft0WdzxCBaiSTJWN">虚拟网络</td><td data-page-node-id="BU8EaTI9lOG2mGc1yT82mY">NAT 模式</td><td data-page-node-id="gXKfmfVPp9aY2LYO9PmdSN">换 WiFi 网段不变，比桥接稳</td></tr>
+<tr data-page-node-id="ScVInSmIIvuejjxdRiPl8s"><td data-page-node-id="ud9qnfpMcfUopju4WNDdJJ">Harbor 域名</td><td data-page-node-id="9Ovh9AhROG2kQrVb3ikecm"><code data-page-node-id="wU3VXRh7zDeyrmAil5bBt9">harbor.local</code></td><td data-page-node-id="7j6VHHmDA5clP7aFMcHf1k">靠 hosts 解析，不是公网域名</td></tr>
+<tr data-page-node-id="S5OkPMI3rnBvvzvRj0XT3G"><td data-page-node-id="5yWxn4jKN3L9rTVKnPSHS6">应用域名</td><td data-page-node-id="cE8dzr7M0SACjhyjfyYEv3"><code data-page-node-id="4EES3gPHILDnECIldNEwG7">todo.local</code></td><td data-page-node-id="y5KrtlBRWytg2okwHJ4tho">同上</td></tr>
+<tr data-page-node-id="PxSQQ6HquSqmcgD4NSfBuw"><td data-page-node-id="a2FPGFgLJgvzYs1MadVlYI">Pod 网段</td><td data-page-node-id="XravT9R1vcHXklk8bwpRza"><code data-page-node-id="IS1VPEBPTmFStygL8olsQz">10.244.0.0/16</code></td><td data-page-node-id="a0Oek5UoFj5rS6566HzftW">避开 NAT 网段，别用默认值</td></tr>
+<tr data-page-node-id="DQxpUA21GnbY9kFTxpGV2j"><td data-page-node-id="eMxUlQPPlbWKAgSPHgRKlw">Service 网段</td><td data-page-node-id="T2A8MhDf4GBPWM0cvE9Rbs"><code data-page-node-id="g9WSCOWxOcVvXgD9HRXS50">10.96.0.0/12</code></td><td data-page-node-id="HPIk3vBOXCkOfplM9cOSa5">kubeadm 默认值，保持即可</td></tr>
+<tr data-page-node-id="NlZuxkDgVtXPsOTShi9rgm"><td data-page-node-id="tmM2cSWyk2y9v1oqzMEnxt">K8s 版本</td><td data-page-node-id="2KRiQCELqAMEYPFZsEW5aM"><strong>1.32.x</strong></td><td data-page-node-id="nLqXGjn64cYCLdEgTuZJx2">阿里云源里 v1.26~v1.37 都有；Rocky 10 内核 6.12 建议 ≥1.31，别用 1.24 以前（没有 dockershim 兼容层）</td></tr>
+<tr><td>yum / dnf 源</td><td><strong>阿里云（已配好）</strong></td><td>rockylinux/10 + epel/10 + crb 已启用，脚本 <code>change-yum-repo.sh</code></td></tr>
+<tr><td>Docker CE 源</td><td><code>mirrors.aliyun.com/docker-ce/linux/centos/10</code></td><td><strong>官方 download.docker.com 国内连不通</strong>，必须走阿里云；Rocky 10 对应 centos/10 这个路径</td></tr>
+<tr><td>K8s 源</td><td><code>mirrors.aliyun.com/kubernetes-new/core/stable/v1.32/rpm/</code></td><td>替代官方 pkgs.k8s.io</td></tr>
+<tr><td>容器运行时</td><td>containerd + Docker CE</td><td>Docker 负责构建镜像，containerd 才是 K8s 真正用的运行时</td></tr>
+</table>
+
+<h2 data-page-node-id="7l1Ts6TFUHfpEyo901nz5k"><span class="day" data-page-node-id="2JoIGlNTpACHoaMOe2LREf">01</span>Day 0（半天）把 4 台虚拟机立起来</h2>
+<p class="goal"><strong>状态：已完成 ✅</strong>（2026-09-30 实测）。4 台 Rocky 10.2 已装好开机、网卡 ens160、IP 已配成静态，WindTerm 可 SSH 登录。下面把实测结果留档，不必重做。</p>
+
+<h3 data-page-node-id="DuK0oxbEYiHpn6foTBlKh0">步骤</h3>
+<ul class="chk" data-page-node-id="6rxnxRe8bsJ7gIAvxS9RHB">
+<li data-page-node-id="IMoVGJ9ZGXlFuNWZPxbG1g"><input type="checkbox" checked data-page-node-id="cKdGqjo4n9qkcuwPsiZDNU"> VMware → 编辑 → 首选项 → 工作区 → 把<strong data-page-node-id="oV6hpM4QHXNMLOlhrpsJOA">虚拟机默认位置</strong>从 C 盘改到 <code data-page-node-id="22AggNpDz70UDH8RjNur3a">D:\VMs</code>（C 盘只剩 31.8 GB，不改必爆盘）</li>
+<li data-page-node-id="ywEU5MuCmZL08xlFi1i5eF"><input type="checkbox" checked data-page-node-id="poYkbdVhBu3l3gmlBi4qiJ"> 下载 Rocky 9 Minimal ISO：阿里云镜像 <code data-page-node-id="pF2on87yfr2Lud40SVIggk">mirrors.aliyun.com/rockylinux/9/isos/x86_64/</code>，找 <code data-page-node-id="DVXN8oVN7l2UGo5fNXywHK">Minimal</code> 那个（约 1.5 GB）</li>
+<li data-page-node-id="77SGe003Ti8skCtWylQjXI"><input type="checkbox" checked data-page-node-id="brkEvTNwu71eFahV31yDzS"> 新建 4 台虚拟机：典型 → 「稍后安装操作系统」→ Linux / RHEL 9 64 位 → 按上面参数表填 CPU/内存 → <strong data-page-node-id="mjF2jHPynx9dQ3locqXDPh">磁盘务必不要勾选「立即分配所有磁盘空间」</strong> → 网络选 NAT</li>
+<li data-page-node-id="tlCFMHzlEbPrt5d7bLoFOv"><input type="checkbox" checked data-page-node-id="5nz5MlQO0vfBNiM3rG4hcz"> 每台：虚拟机设置 → 显示器 → <strong data-page-node-id="OnzHDgEcxoTTeS892uRBUT">取消「加速 3D 图形」</strong>（让它别去唤醒 3060 独显）</li>
+<li data-page-node-id="efPTXyZrCxJRwmlrMphhqa"><input type="checkbox" checked data-page-node-id="qjRkAUrrWrKo3Ex5gVzGSr"> 装系统：软件选择保持「最小化安装」，root 密码 4 台设成同一个（记下来），<strong data-page-node-id="iWvKb5PrDkY3hFU0FzGVCo">在「网络和主机名」里把网卡开关打开</strong></li>
+</ul>
+
+<h3 data-page-node-id="uRaBJTmqlxQzCY1fUgBUBa">新学</h3>
+<p data-page-node-id="nkqpQ7i1JSapDYbrftx6u1"><span class="tag t-b" data-page-node-id="MaHcxfsNgDPABs5JVDcdMh">VMware 虚拟网络编辑器</span> <span class="tag t-b" data-page-node-id="xQytS1R7Ac0zfFAZHADKwh">NAT 与桥接的区别</span></p>
+
+<div class="box warn" data-page-node-id="hJCGQzS33Ys1phWRjcFKav">
+<strong data-page-node-id="Hc2Ku9mWuxl2xUm4FNUMNt">今天会踩的坑</strong>
+<ul data-page-node-id="GzuOTfz1dI1iCgUN0IJryx">
+<li data-page-node-id="IgWRjQCkvxdGR6pOeiib3y"><strong data-page-node-id="o9jcEdOwK2fpJer4w8g9Cz">装完 SSH 连不上</strong>：Rocky 9 网卡默认不自动连接。进系统执行 <code data-page-node-id="mg8Hw2oPCM3abNW1DEspQJ">nmcli con up ens160</code>（网卡名可能是 ens33/ens160，用 <code data-page-node-id="0ELfA9GxXew9YuCuTLJ2o7">ip a</code> 确认），再 <code data-page-node-id="7W0VWRB8BW4nZdNKIFt6b0">nmcli con mod ens160 connection.autoconnect yes</code>。</li>
+<li data-page-node-id="kMzqaOWibWcc4XCUjrWPZW"><strong data-page-node-id="IRHDXGAgmBqNKmx09EDpVY">C 盘爆红</strong>：如果第 1 步没改，虚拟机全建在 C 盘。发现就删掉重建，别硬撑。</li>
+<li data-page-node-id="DVQaNUKvPVwgT2mG1FHThN"><strong data-page-node-id="6433sX1vLcFHAvZzGIIVDb">磁盘选了「立即分配」</strong>：4 台直接吃掉 130 GB。删掉重建。</li>
+</ul>
+</div>
+
+<div class="box verify" data-page-node-id="Mi4pthJSRZHfHE85heGc4y">
+<strong data-page-node-id="QGSLRESqAkavwolZKtlsKr">验收标准</strong>：WindTerm 开 4 个会话全部连上，每台执行 <code data-page-node-id="A2fgVrD8YDs5Src8dWGeJr">ip a</code> 能看到 192.168.80.x 的 IP。<br data-page-node-id="rW3c3EkTrk6WlzNZbKikgV">
+<strong data-page-node-id="q7JcKwTqzFjGRA69OADNFT">做完立刻打快照</strong>（VMware 右键 → 快照 → 拍摄快照），命名「Day0-系统装好」。
+</div>
+
+<h2 data-page-node-id="jYOR9PGbUFXWA9CbRH0tmg"><span class="day" data-page-node-id="nP45lV29FLwTAqBHG4ldPp">02</span>Day 1　四台统一初始化</h2>
+<p class="goal" data-page-node-id="KGj350xWUiEYlbVnuBArmd">4 台机器做完全一样的事。用 WindTerm 的「发送命令到所有会话」一次发 4 台，效率翻倍。</p>
+
+<h3 data-page-node-id="OpRdB6iX2grRzqMGPZSi7H">步骤（每台都要做）</h3>
+<ul class="chk" data-page-node-id="NbDbCGkWYMqhBOc4SakXxC">
+<li data-page-node-id="uDBzzWQY2nFO1sjYq1emV4"><input type="checkbox" checked data-page-node-id="x23Eu4uB3JTp1qsWwthv8H"> <code data-page-node-id="zVxyOd2cQYH43wLxoBm4Id">hostnamectl set-hostname jenkins</code>（B/C/D 分别改成 master / worker1 / worker2）
+<br><span class="tag t-a">实测待修正</span> A=<code>jenkins</code> ✅、B=<code>master</code> ✅，但 <strong>C 是 <code>work1</code>、D 是 <code>work2</code></strong>，而 hosts 里写的是 <code>worker1</code>/<code>worker2</code>。在 C/D 上补一句：<code>hostnamectl set-hostname worker1</code>（D 用 worker2），然后重新登录生效。不一致的话 <code>kubectl get nodes</code> 显示的名字会和 hosts 对不上。</li>
+<li data-page-node-id="C0i6leSeFjQyMMcK04JWjk"><input type="checkbox" checked data-page-node-id="3drC1SvEb6HgECc973vg9G"> 配静态 IP：<code data-page-node-id="7v4h7plP2SJCaN52QCr22c">nmcli con mod ens160 ipv4.addresses 192.168.80.10/24 ipv4.gateway 192.168.80.2 ipv4.dns 223.5.5.5 ipv4.method manual</code> 然后 <code data-page-node-id="XOl4ECRHHIi4PyPSPJXb2K">nmcli con up ens160</code></li>
+<li data-page-node-id="pmIYiJ1ozAHo7LDvR1LNyf"><input type="checkbox" checked data-page-node-id="W2MVQarTurUJPSa6YnKxol"> 4 台机器都往 <code data-page-node-id="bMbs5avlgOXLforJ4CK8QW">/etc/hosts</code> 写同样的四行（IP + 主机名 + harbor.local）</li>
+<li data-page-node-id="8BNRAe1EP78uUOaxZcWM5h"><input type="checkbox" checked data-page-node-id="odPDeuSxqju8r86baEOzIM"> yum 源换阿里云 ✅ <strong>已完成</strong>：4 台都跑过 <code>change-yum-repo.sh</code>，baseos/appstream/crb/extras 指向 <code>mirrors.aliyun.com/rockylinux/10</code>，epel 指向 <code>mirrors.aliyun.com/epel/10</code>，装 tree + htop 自检通过</li>
+<li data-page-node-id="KfFg81iSeTVwt2PZpDbjHW"><input type="checkbox" data-page-node-id="Z7TFKe4HpfQHZezGytCmHE"> 关 firewalld：<code data-page-node-id="KlHIVm53Jgc8C1WVMurvP2">systemctl disable --now firewalld</code></li>
+<li data-page-node-id="otL5H0A9LwFsuGvtrOKCCB"><input type="checkbox" data-page-node-id="IVBEBaQSXsxuFpANnCQLeK"> 关 SELinux：<code data-page-node-id="MspQEWgBpwoVYbSgSRGJoH">setenforce 0</code> + 改 <code data-page-node-id="EsgY1hzRJm7xxsrYFBPEOE">/etc/selinux/config</code> 里 <code data-page-node-id="vCSvta4fiLNMpSEdGlAANo">SELINUX=disabled</code>（只改运行时重启会失效）</li>
+<li data-page-node-id="QDAxO3rGBeOpFfo0TO1YqT"><input type="checkbox" data-page-node-id="vVilP88UfRYfkvW5WZcQYK"> 关 swap：<code data-page-node-id="fnIZhdoWBrvsb2lDNEPvOr">swapoff -a</code> + <strong data-page-node-id="kGzuQkMviaX8k0FsQLA2L1">注释掉 <code data-page-node-id="on5yVuqMt6LGdcow7CkSWg">/etc/fstab</code> 里的 swap 行</strong>（不注释重启后 K8s 起不来）</li>
+<li data-page-node-id="TBpxm6lMdHcbvB9S2SLCUM"><input type="checkbox" data-page-node-id="UTpAmovlM1ACfyMvqbxhzz"> 时间同步：<code data-page-node-id="tGCJ3FRgdRCuTF4W7FspHG">yum install -y chrony &amp;&amp; systemctl enable --now chronyd</code></li>
+<li data-page-node-id="R4BNsVpbjBTvvkkaqXGPIk"><input type="checkbox" checked data-page-node-id="DqzkXcL2gm4TKloa5haKyq"> K8s 内核参数：加载 <code data-page-node-id="yCY2NYmCUvZOE8JjoAk0VP">br_netfilter</code> 模块 + <code data-page-node-id="DeNs9cohAAGECo3vGjVADt">/etc/sysctl.d/k8s.conf</code> 写 <code data-page-node-id="RCIftgLr7iAqDfX4HuK02C">net.ipv4.ip_forward=1</code>、<code data-page-node-id="iyDSTHxgKX8LIcqwZBfM5k">net.bridge.bridge-nf-call-iptables=1</code>，然后 <code data-page-node-id="epXxHHRhTcww6gACiDp9WS">sysctl --system</code></li>
+<li data-page-node-id="aFW5doyTRbgPHGiJ8GpGpW"><input type="checkbox" data-page-node-id="Kw13EbAqxMzwRoIHrO9YoF"> 装常用工具：<code data-page-node-id="Ms4Kagl6jFTxNOGiCIR1Mm">vim wget curl net-tools lsof bash-completion telnet tar</code>
+<br><span class="tag t-a">实测：这 8 个一个都没装</span> 最小化安装只装了 326 个包，<code>vim</code>/<code>wget</code>/<code>tar</code>/<code>ifconfig</code>/<code>git</code>/<code>gcc</code> 全部缺失。一条命令补齐（<strong>最后两个别漏</strong>）：
+<pre><code>dnf install -y vim-enhanced wget curl net-tools lsof bash-completion \
+  telnet tar git gcc make bind-utils iptables-nft</code></pre>
+<strong><code>iptables-nft</code> 必须装</strong>：Rocky 10 默认只有 <code>nft</code> 命令，没有 <code>iptables</code>，而 kubeadm 的预检查和 kube-proxy 都要找 iptables，第 5 天会因此报错。</li>
+<li data-page-node-id="b8fQGABymVcnHzBCOxC7PI"><input type="checkbox" data-page-node-id="GkVwNp0Xt8TgEBXpvvtZOJ"> A 机配 SSH 免密到 B/C/D（<code data-page-node-id="NkzwOMX8hnqlUQr6h68KrM">ssh-keygen</code> + <code data-page-node-id="cYY5sAUOkXaohT0wSxsxjR">ssh-copy-id</code>），后面分发文件要用</li>
+</ul>
+
+<h3 data-page-node-id="7oTRvZZgjGksIDgPkLarBT">新学</h3>
+<p data-page-node-id="HF5KkfcLXKCk88kQ86PUZT"><span class="tag t-b" data-page-node-id="hmGiPl0ZVRp5HG5wWDVFc8">nmcli 配静态 IP</span> <span class="tag t-b" data-page-node-id="0JVA2pBk75fo53MAeoWFR5">sysctl 内核参数是干什么的</span> <span class="tag t-b" data-page-node-id="WDHAbDlf5m9QsHRqriDJ9p">SELinux 三种状态</span></p>
+
+<div class="box warn" data-page-node-id="LRLQczaCXyVE5oNwF06mDK">
+<strong data-page-node-id="nLdHmqMYIHGLhCxfBEzY7A">今天会踩的坑</strong>
+<ul data-page-node-id="UVsBCnPdMFbqrRwU7ECOhr">
+<li><strong>同步输入（WindTerm「发送到所有会话」）不能拿来操作 vim</strong> —— 2026-09-30 实测踩坑：在 A 上用同步输入 <code>vim /etc/fstab</code> 加注释，结果<strong>只有 A 改成功，B/C/D 纹丝未动</strong>。
+<br>原因：同步输入广播的是<strong>按键流</strong>，不是命令。<code>swapoff -a</code> 这类"一行命令+回车"是无状态的，四台都能同步成功；但 vim 是<strong>有状态的全屏交互程序</strong>——各台 vim 启动有快有慢、文件内容不同（UUID 不同、实测 A 的 fstab 比别台少 1 字节）导致光标位置不同、插入模式时序差半拍，<code>i</code> 和 <code>#</code> 落到别的机器上就成了无效按键甚至别的 vim 命令。
+<br><strong>规则：改文件一律用非交互命令</strong>（<code>sed -i</code> / <code>cat &gt;&gt;</code> / <code>tee</code>）再广播；非要用 vim 就先关掉同步逐台改。<strong>每次广播后逐台 grep 验证</strong>，别只看一台。</li>
+<li><strong data-page-node-id="TWErwPq6BOyQDFf13ICJgT">swap 实测还开着（3G，设备 /dev/dm-1）</strong>，且 <code>/etc/fstab</code> 第 14 行有 swap 条目。两步都要做：
+<pre><code>swapoff -a
+sed -i 's|^\([^#].*swap.*\)$|#\1|' /etc/fstab   # 注释掉 swap 行
+swapon --show   # 应该什么都不输出</code></pre>
+只 <code>swapoff</code> 不注释 fstab，重启后 swap 回来，第 5 天 kubelet 直接启动失败，报错很难看懂。</li>
+<li><strong>SELinux 和 firewalld 实测都还开着</strong>：SELinux=<code>Enforcing</code>、firewalld=<code>active</code>。
+<pre><code>setenforce 0
+sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+systemctl disable --now firewalld
+getenforce    # 期望 Disabled 或 Permissive</code></pre>
+只 <code>setenforce 0</code> 不改配置文件，重启后回到 enforcing，各种权限诡异报错。</li>
+<li><strong>内核参数还是默认值</strong>：实测 <code>ip_forward=0</code>、<code>br_netfilter</code> 未加载。
+<pre><code>cat > /etc/modules-load.d/k8s.conf &lt;&lt;EOF
+br_netfilter
+EOF
+cat > /etc/sysctl.d/k8s.conf &lt;&lt;EOF
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+modprobe br_netfilter      # ★ 关键：立刻加载模块，缺了这步下面全是白做
+sysctl --system
+lsmod | grep br_netfilter                      # 有输出才算成
+sysctl -n net.bridge.bridge-nf-call-iptables   # 必须是 1，不能是报错</code></pre>
+<strong>为什么必须手动 modprobe（2026-09-30 踩过）：</strong><code>/etc/modules-load.d/*.conf</code> <strong>只在开机时</strong>由 systemd-modules-load 服务读取，对当前正在跑的系统<strong>完全无效</strong>。模块没加载时 <code>/proc/sys/net/bridge/</code> 这个目录根本不存在，此时 <code>sysctl --system</code> 里的 bridge-nf-call 三条会静默失败（只打印一行 "cannot stat ..."，很容易被刷过去）。所以流程必须是：<strong>先 modprobe 加载模块 → 再 sysctl --system 应用参数</strong>。
+</li>
+<li data-page-node-id="076x4N6PwcfPIdjzDweZ3D"><strong data-page-node-id="e0SMZGAhhFGwlAxztrJ6ql">SELinux 只 setenforce 0</strong>：同上，重启后回到 enforcing，各种权限诡异报错。</li>
+<li data-page-node-id="eMj6d1zv7HecLIEh2SQzg0"><strong data-page-node-id="HL21PWLGGhqYBUTVMcD6Dy">/etc/hosts 只写自己</strong>：必须 4 台都写全 4 行，否则后面按主机名访问不通。</li>
+</ul>
+</div>
+
+<div class="box verify" data-page-node-id="J0MWCyU3HrhxmTwI1dRUsM">
+<strong data-page-node-id="2WqPjnhn4r6XjYj2XTh4zr">验收标准</strong>：① 四台互相 <code data-page-node-id="xd44eACB26ZszHqjMsz409">ping</code> 通；② A 机 <code data-page-node-id="8bKljE4PwYH0kfKaB3lE8H">ssh master</code> 免密直连；③ <code data-page-node-id="R1DNHuO8EjPhmLozfmaulf">curl -I https://mirrors.aliyun.com</code> 返回 200。<br data-page-node-id="jxK9cUlBB9Sq8Q2v3yvnec">
+<strong data-page-node-id="3aoyWSKgBDayqpMTJ7zrNM">打快照</strong>：命名「Day1-初始化完成」。<strong data-page-node-id="YkKyRxhWflmCBP1rATZ37H">这一天的快照最重要</strong>，后面所有天崩了都能回滚到这里。
+<br><br><strong>本日进度（2026-09-30 实测）</strong>：已完成 = 换源、静态 IP、hosts、chrony、hostname（A/B）；<strong>待做 = 修正 C/D 主机名、关 swap、关 SELinux、关 firewalld、内核参数、装工具、配 SSH 免密</strong>。SSH 免密实测还没做（4 台都没有 <code>~/.ssh</code>），在 A 机上：<code>ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519</code> 然后 <code>ssh-copy-id master</code>（worker1、worker2 各来一次）。
+</div>
+
+<h2 data-page-node-id="mas6bWGBDFSw8J2RNDycBi"><span class="day" data-page-node-id="wH8Z3CmQWoMRcF4iypy86H">03</span>Day 2　装容器运行时（Docker + containerd）</h2>
+<p class="goal" data-page-node-id="iDUoJTKHnnC1Qmuz8zOBRA">这是说明书里没写、但你不装就进行不下去的一天。</p>
+
+<h3 data-page-node-id="uetM0HkBkZHcJX8hzG13Oi">步骤</h3>
+<ul class="chk" data-page-node-id="sYJ84iVH2KQuHBV6dAL6xt">
+<li data-page-node-id="ERe8HRS5VVK7732LhhZI1J"><input type="checkbox" data-page-node-id="h7F5dQe2UiuKCZBCoCNDc8"> A/B/C/D 装 Docker CE（用<strong>阿里云 docker-ce 源</strong>，<strong>官方 download.docker.com 实测连不通</strong>）
+<pre><code># Rocky 10 对应 centos/10 这个路径，别写成 9
+dnf install -y dnf-plugins-core
+dnf config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+sed -i 's|download.docker.com|mirrors.aliyun.com/docker-ce|g' /etc/yum.repos.d/docker-ce.repo
+dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+systemctl enable --now docker
+docker version   # 能看到 Server 版本就算成</code></pre>
+说明：<code>containerd.io</code> 随 Docker 一起装上，K8s 用的运行时就是它，不用单独再装一遍。</li>
+<li data-page-node-id="kSdzbZuONllB9jxYvtdKeD"><input type="checkbox" checked data-page-node-id="apVg28kjiXkh3DjN26zs7q"> 配 <code data-page-node-id="Gvn8mGAaSgnLv4Au5KLApY">/etc/docker/daemon.json</code>：加国内 registry-mirrors + <code data-page-node-id="xmSNHNlAcLJKlXY9jGQKfT">"exec-opts":["native.cgroupdriver=systemd"]</code>
+<pre><code>mkdir -p /etc/docker
+cat &gt; /etc/docker/daemon.json &lt;&lt;'EOF'
+{
+  "registry-mirrors": ["https://swr.cn-north-4.myhuaweicloud.com"],
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+EOF
+
+# 1) 先验 JSON 格式（多一个逗号 docker 就起不来）
+python3 -m json.tool /etc/docker/daemon.json
+
+# 2) 生效（daemon.json 不会热加载，必须重启）
+systemctl daemon-reload
+systemctl restart docker
+
+# 3) 验收
+docker info | grep -A2 "Registry Mirrors"     # 应显示 https://swr.cn-north-4.myhuaweicloud.com/
+docker info | grep -i "Cgroup Driver"         # 应显示 systemd</code></pre>
+  <p><strong>这个文件是什么：</strong>Docker 守护进程（<code>dockerd</code>）的主配置文件，地位相当于 sshd 的 <code>sshd_config</code>。它<strong>默认不存在</strong>（本机就是这种从零新建的情况），所以<strong>不是"加一行"，而是整份 JSON 写进去</strong>。</p>
+  <p><strong>两个参数各管什么：</strong></p>
+  <ul>
+    <li><code>registry-mirrors</code> —— Docker Hub 在国内直连不通，这里是"代购点"，<code>docker pull</code> 时改从它取镜像。写数组，Docker 按顺序试。</li>
+    <li><code>exec-opts: native.cgroupdriver=systemd</code> —— cgroup 是内核用来限制和统计进程资源（CPU、内存）的机制。<strong>kubelet 默认用 systemd 驱动，Docker 默认用 cgroupfs</strong>，两边不一致时第 5 天 <code>kubeadm init</code> 会直接报 <code>kubelet cgroup driver: systemd is different from docker cgroup driver: cgroupfs</code>。本机是 <strong>cgroup v2</strong>，更要统一成 systemd。</li>
+  </ul>
+  <p><strong>三个坑：</strong></p>
+  <ul>
+    <li><strong>JSON 不能写注释，最后一项后面不能有逗号</strong>，否则 docker 直接起不来（报 <code>invalid character</code>）。写完先用 <code>python3 -m json.tool</code> 验一遍。</li>
+    <li><strong>加速器地址别抄网上的老清单</strong>（大量已失效）。本机实测：<code>docker.1ms.run</code> <strong>可用</strong>（返回 401 属<strong>正常</strong>，代表服务活着）；<code>m.daocloud.io</code> 连接超时；<code>dockerproxy.net</code> / <code>hub.rat.dev</code> / <code>docker.1panel.live</code> / <code>docker.nju.edu.cn</code> 全部失效。<br>
+    <span style="color:#b45309"><strong>【2026-10-08 更正】</strong>当时只看 <code>/v2/</code> 返回 401 就判定"可用"，是<strong>误判</strong>：401 只证明<strong>认证服务</strong>活着，真正下载镜像层时会 307 跳到被墙的 Cloudflare CDN。<strong>现行结论：没有任何公共加速器可用</strong>，统一改用<strong>华为云 SWR 无感镜像</strong>（见下一条「配置镜像源（华为云 SWR 无感镜像）」）。这也是一次教训——<strong>探活要探到"真能下东西"为止，不能只看接口通不通</strong>。</span></li>
+    <li><strong>改完必须 <code>systemctl restart docker</code></strong>，这份配置不热加载；另外 B/C/D 也要写同一份（K8s 节点上 Docker 虽不是运行时，但构建/调试镜像要用）。</li>
+  </ul>
+  <p><strong>实测进度（2026-10-08）：</strong>4 台均已写入同一份配置并生效 —— <code>docker info</code> 显示 <code>Cgroup Driver: systemd</code>、<code>Cgroup Version: 2</code> ✅。其中 <code>registry-mirrors</code> 已改为<strong>华为云 SWR 单条主机名镜像</strong>（见下一条），<code>docker pull</code> 从此无感。</p></li>
+<li data-page-node-id="dpllitem20261008"><input type="checkbox" checked data-page-node-id="dpllchk20261008"> <strong>配置镜像源（华为云 SWR 无感镜像）</strong>
+  <p><strong>为什么做：</strong>国内直连 Docker Hub 与公共加速器都不通。用华为云 SWR 公共仓库做镜像源，<strong>docker 与 K8s 两条链路都透明</strong>——你照常写标准 <code>docker pull</code>、标准 yaml 镜像名即可，<strong>感觉不到换过源</strong>。分两条链路配置：</p>
+  <p><strong>① Docker 链路（docker.io）：</strong>上一步的 <code>/etc/docker/daemon.json</code> 已经写好 <code>"registry-mirrors": ["https://swr.cn-north-4.myhuaweicloud.com"]</code>（整份 JSON 写入，不是加一行）。只需让它生效并验收：</p>
+  <pre><code>systemctl daemon-reload
+systemctl restart docker
+docker run hello-world      # A/B/C/D 四台都应输出 "Hello from Docker!"</code></pre>
+  <p><strong>② K8s 链路（docker.io / registry.k8s.io / quay.io，由 containerd 经 CRI 拉取，不走 docker）：</strong></p>
+  <div class="note-imp">
+  <strong class="hl-red">为什么 Day 2 当时配的 certs.d 没生效（Day 5 装 Calico 才暴露）：</strong>containerd 的 <code>config_path</code>（决定是否读 <code>/etc/containerd/certs.d</code> 目录）写在主配置 <code>/etc/containerd/config.toml</code> 的 <code>[plugins.'io.containerd.cri.v1.images'.registry]</code> 段，默认是空串 <code>""</code>。原来想"省事"用 <code>/etc/containerd/conf.d/mirrors.toml</code> 这个 drop-in 去设它，但 <strong>containerd 2.x 只有主配置里写了 <code>imports</code> 才会去读 conf.d</strong>；Day 2 用 <code>containerd config default &gt; config.toml</code> 生成的主配置<strong>没有 imports 行</strong>，于是 drop-in 从未被加载，<code>config_path</code> 一直是空 → certs.d 里三份 hosts.toml 整盘休眠，直到 Day 5 拉 Calico 镜像才爆。<br>
+  <strong class="hl-red">正确做法：把 config_path 直接写进主 config.toml（和改 SystemdCgroup 同一份文件），不要靠 conf.d drop-in。</strong>
+  </div>
+  <p><strong class="hl-red">👆 这段根因是 Day 5（2026-10-10）复盘补写的。关于归属：</strong>Day 2 当时（2026-10-08）<strong>还没有</strong>你后来（2026-10-09）立的"别替我写脚本、给我内联命令我自己敲"那条规矩。那个 certs.d 配置是<strong>我（AI）设计并写脚本/内联命令</strong>的（原始版本用 conf.d drop-in 去设 config_path），你照手册在 4 台 VM 上执行。所以：<strong>设计 + 写脚本 = 我（AI）；动手执行 = 你（用户）</strong>。坑（conf.d 不生效）是我设计时埋的，不是你操作错。</p>
+  <p><strong>当时（Day 2, 2026-10-08）实际执行的操作（原始写法，错误示范，留作复盘，请勿照抄）：</strong></p>
+  <pre><code># —— 当时采用的写法（bug 版）——
+# 1) 建 certs.d，三套 hosts.toml 当时都指向 SWR（docker.io / registry.k8s.io / quay.io 全走 SWR）
+mkdir -p /etc/containerd/certs.d/docker.io /etc/containerd/certs.d/registry.k8s.io /etc/containerd/certs.d/quay.io
+
+cat > /etc/containerd/certs.d/docker.io/hosts.toml <<'EOF'
+server = "https://registry-1.docker.io"
+
+[host."https://swr.cn-north-4.myhuaweicloud.com"]
+  capabilities = ["pull", "resolve"]
+EOF
+# registry.k8s.io / quay.io 同理，server 分别改 registry.k8s.io / quay.io，host 都指向 SWR
+
+# 2) 关键错误：用 conf.d drop-in 设 config_path（而非写进主 config.toml）
+mkdir -p /etc/containerd/conf.d
+cat > /etc/containerd/conf.d/mirrors.toml <<'EOF'
+[plugins.'io.containerd.cri.v1.images'.registry]
+  config_path = "/etc/containerd/certs.d"
+EOF
+
+# 3) 重启
+systemctl restart containerd
+# 结果：主 config.toml 无 imports 行 → drop-in 从不加载 → config_path 仍 "" → certs.d 整盘休眠
+#       （docker.io 当时还错配成 SWR，SWR 又不代理 calico，双重叠加 → Day 5 拉 Calico 才爆）</code></pre>
+  <p><strong>正确写法见下方「手写法」（已改为 config_path 直接写主 config.toml、docker.io 改走 Daocloud）。</strong></p>
+  <p><strong>镜像源分配（2026-10-10 实测修正）：</strong></p>
+  <ul>
+    <li><code>docker.io</code> → <strong class="hl-red">Daocloud 通用代理</strong> <code>https://docker.m.daocloud.io</code>：SWR 只预置 mysql/nginx/hello-world 等少数热门镜像，<strong>不代理 python、calico 这类</strong>；Day 4 拉 python、Day 5 拉 Calico 都靠它（国内多源实测仅 Daocloud 可达）。</li>
+    <li><code>registry.k8s.io</code> → 华为 SWR（能代理 pause / coredns，够 K8s 用）。</li>
+    <li><code>quay.io</code> → 华为 SWR（Calico 新版已改用 docker.io，此项基本用不到，留着无害）。</li>
+  </ul>
+  <p><strong>三台各执行（手写法，以 docker.io 为例）：</strong></p>
+  <pre><code># 1) 写 hosts.toml：docker.io 指向 Daocloud（含 resolve，否则不算镜像源）
+mkdir -p /etc/containerd/certs.d/docker.io
+cat &gt; /etc/containerd/certs.d/docker.io/hosts.toml &lt;&lt;'EOF'
+server = "https://registry-1.docker.io"
+
+[host."https://docker.m.daocloud.io"]
+  capabilities = ["pull", "resolve"]
+EOF
+
+# 2) registry.k8s.io / quay.io 指向 SWR（同理换目录名与 server）
+mkdir -p /etc/containerd/certs.d/registry.k8s.io /etc/containerd/certs.d/quay.io
+cat &gt; /etc/containerd/certs.d/registry.k8s.io/hosts.toml &lt;&lt;'EOF'
+server = "https://registry.k8s.io"
+
+[host."https://swr.cn-north-4.myhuaweicloud.com"]
+  capabilities = ["pull", "resolve"]
+EOF
+# quay.io 同上，server 改 https://quay.io
+
+# 3) 关键：把 config_path 直接写进主 config.toml（不要靠 conf.d drop-in）
+grep -n 'config_path' /etc/containerd/config.toml          # 先看当前值
+sed -i 's|config_path = ""|config_path = "/etc/containerd/certs.d"|' /etc/containerd/config.toml
+grep -n 'config_path' /etc/containerd/config.toml          # 应显示 = "/etc/containerd/certs.d"
+
+# 4) 重启生效
+systemctl restart containerd</code></pre>
+  <p><strong>省事做法：</strong>直接跑项目脚本 <code>bash scripts/setup-containerd-mirrors.sh</code>（已按上面的正确写法更新：docker.io 用 Daocloud、config_path 直接写进主 config.toml）。</p>
+  <p><strong>验收：</strong>Docker 侧 <code>docker info | grep -A1 "Registry Mirrors"</code> 显示 SWR、<code>docker run hello-world</code> 成功；<strong class="hl-green">K8s 侧必须当场验证 certs.d 真的生效</strong>：<code>ctr -n k8s.io i pull docker.io/library/busybox:latest</code> 能经 Daocloud 拉到（不通就说明 config_path 还没生效，回头查第 3 步）。</p>
+  <p><strong>后面各天怎么用：</strong>Day 3 测试镜像直接 <code>docker pull nginx:latest</code>；Day 5 Calico / Day 7 Ingress / Day 9 监控 镜像都由 K8s 经 containerd 透明拉取，yaml / helm values 写标准名字即可，<strong>不用改任何镜像地址</strong>。</p></li>
+<li data-page-node-id="C1wW8EezCCW4qMFk4Pls6M"><input type="checkbox" data-page-node-id="mZmFiAGwKWfzOZZbfqsNEK"> B/C/D 确认 containerd 状态（随上一步的 <code>containerd.io</code> 已装好）：<code>systemctl enable --now containerd</code> + <code>containerd config default &gt; /etc/containerd/config.toml</code>，并把 <code>SystemdCgroup</code> 改成 <code>true</code>
+<pre><code>systemctl enable --now containerd
+
+# 1) 先备份安装包自带的原厂文件（它禁用 CRI，K8s 用不了）
+cp /etc/containerd/config.toml /etc/containerd/config.toml.bak
+
+# 2) 生成完整默认配置（真实输出约 286 行 / 8.5KB）
+containerd config default &gt; /etc/containerd/config.toml
+
+# 3) 确认命令真生效了（886 字节 / 31 行 = 没生效）
+wc -l /etc/containerd/config.toml
+
+# 4) 精确找到那一行（v2.3.6 在第 90 行）
+grep -n "SystemdCgroup" /etc/containerd/config.toml
+
+# 5) 改掉（全文件只有这一处，sed 安全）
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+grep -n "SystemdCgroup" /etc/containerd/config.toml   # 应显示 = true
+
+# 6) 换 pause（sandbox）镜像 —— 默认指向 registry.k8s.io，国内拉不到
+sed -i "s|registry.k8s.io/pause:3.10.2|registry.aliyuncs.com/google_containers/pause:3.10.2|" /etc/containerd/config.toml
+grep -n "sandbox = " /etc/containerd/config.toml      # 第 28 行应变成 aliyuncs 地址
+
+# 7) 预先拉一次，确认真能拿到（本机实测：8.8 秒 / 329KB）
+ctr -n k8s.io i pull registry.aliyuncs.com/google_containers/pause:3.10.2
+
+# 8) 重启生效
+systemctl restart containerd
+systemctl is-active containerd</code></pre>
+  <p><strong>第 6 步在干什么：</strong><code>sandbox</code>（也叫 pause 镜像）是每个 Pod 启动时<strong>第一个创建的那个"占位容器"</strong>，它本身不干活，只负责把 Pod 的网络命名空间、IPC 命名空间先建立起来占住，业务容器再"加入"进去共享。kubelet 建 Pod 的第一件事就是拉它 —— 拉不到就卡在 <code>FailedCreatePodSandBox / failed to get sandbox image</code>，Pod 永远 Pending。</p>
+  <p><strong>它藏在哪：</strong>在 <code>[plugins.'io.containerd.cri.v1.images'.pinned_images]</code> 段下，内容只有一行 <code>sandbox = '...'</code>。<strong>版本号保持 3.10.2 不变</strong>（和 containerd 默认一致，只换仓库地址，不换版本，避免与 kubelet 期望不符）。</p>
+  <p><strong>为什么不改 kubelet 的参数：</strong>老教程会让你给 kubelet 加 <code>--pod-infra-container-image=</code>。这个参数在新版本里<strong>已废弃</strong>，且 containerd 环境下 kubelet 根本不看它 —— 以 containerd 的 <code>sandbox</code> 配置为准。改 containerd 这一行才是有效位置。</p>
+  <p><strong>换个更"正统"的做法（可选）：</strong>等第 3 天 Harbor 起来后，把 pause 镜像 push 进你自己的 Harbor，再把 <code>sandbox</code> 指向 <code>harbor.local/library/pause:3.10.2</code> —— 这是生产环境的常规做法（内部仓库统一供镜像）。先用阿里云地址把 Day 2 跑通，Harbor 好了再换也不迟。</p></li>
+  <p>备注：此文件在 <strong>containerd 2.x</strong> 里的 CRI 段名是 <code>plugins.'io.containerd.cri.v1.runtime'</code>（1.x 时代叫 <code>io.containerd.grpc.v1.cri</code>），<code>SystemdCgroup</code> 位于其下的 <code>...runtimes.runc.options</code> 段内。</p>
+  <p><strong>实测进度（2026-10-08）：</strong>4 台均已生成完整配置（286 行）、<code>SystemdCgroup = true</code>、<code>disabled_plugins = []</code>、containerd active ✅ —— <strong>只剩 sandbox 那一行待换</strong>（见上面第 6 步）。</p>
+<li data-page-node-id="uENhvka92LXOMIjpfQEp0y"><input type="checkbox" data-page-node-id="GSXYameK08Z1DrhFa71PMU"> <strong>【本项目跳过，不必做】</strong> B/C/D 装 cri-dockerd（让 K8s 也能管 Docker 建的容器，可选但建议装）<br>
+<span style="color:#b45309">cri-dockerd 是 K8s 1.24 删除内置 dockershim 后拆出来的「CRI → Docker API」翻译层，<strong>只在你想让 K8s 用 Docker 当运行时才需要</strong>。本项目运行时是 containerd，它原生实现 CRI，不需要翻译层。<code>dnf install cri-dockerd</code> 也装不了（baseos/appstream/crb/extras/epel/docker-ce 全部仓库都没有这个包）。</span></li>
+<li data-page-node-id="vWZry5Q42gsMX4XzgIl6Z5"><input type="checkbox" data-page-node-id="kwSObdDvdBeimkeKSdZb2g"> 全部 <code data-page-node-id="xujQsLbD7WA2GguQpBA5mx">systemctl enable --now docker</code></li>
+</ul>
+
+<h3 data-page-node-id="kNh0D34ZylZadq2OA6Gnro">新学</h3>
+<p data-page-node-id="sDlAh10kthZtfOz1Er0cMK"><span class="tag t-a" data-page-node-id="Thxgr781rsGT8sW8uyQBO5">dockershim 是什么、为什么被移除</span> <span class="tag t-a" data-page-node-id="Ls9zqGP9OcVd6SLCmk4ulJ">Docker 与 containerd 的关系</span> <span class="tag t-a" data-page-node-id="rAcMp0cK4r01Pmq8zFy4yr">CRI 接口</span> <span class="tag t-a" data-page-node-id="2EtZuyogBTSkTAnn4dXSI4">cgroup driver</span></p>
+
+<div class="box warn" data-page-node-id="bJDkjMPvzuk7roNrShg6M8">
+<strong data-page-node-id="KAIUCjWTlgatXgiFSYGJWU">今天会踩的坑</strong>
+<ul data-page-node-id="VwQanKIvqMkC7pst7Hv6ek">
+<li data-page-node-id="rBjtvGE1QIDBLzLf4p4qTv"><strong data-page-node-id="uHdRXwraRNje7XETdsMjyB">daemon.json 写错 JSON 格式</strong>（多了个逗号）：docker 直接起不来，<code data-page-node-id="2udPYvzPctk9JbKhPKq7H9">systemctl start docker</code> 报错。改完先用 <code data-page-node-id="INesEcerlTgyzGFErbexi5">python3 -m json.tool</code> 验一下。</li>
+<li data-page-node-id="XlNJrAxqUuaQhBizObM1DG"><strong data-page-node-id="AMB1ga783bzbSHE9HXUAtl">cgroup driver 不一致</strong>：Docker 用 cgroupfs、kubelet 用 systemd，第 5 天 kubeadm 会报 cgroup driver 不匹配。<strong data-page-node-id="ftyw3fWs8DsIFMazzCjFxV">今天统一成 systemd</strong>，省掉后面两小时排查。</li>
+<li data-page-node-id="9C60JJY1Dj5LRMt3KqOqD8"><strong data-page-node-id="BQlxfuV3blI7fJ3c9N3CNT">装了 Docker 就以为够了</strong>：K8s 1.24+ 不再直接支持 Docker，必须走 containerd。</li>
+<li><strong>以为改好了，其实 config.toml 根本没换</strong>：<code>containerd config default &gt; /etc/containerd/config.toml</code> 没生效时，文件还是安装包自带的<strong>886 字节 / 31 行</strong>版本 —— 里面<strong>搜不到 SystemdCgroup</strong>，而且开头有一行 <code>disabled_plugins = ["cri"]</code>，等于把 CRI 插件关掉了，K8s 完全用不上 containerd。真实 default 输出是 <strong>286 行 / 约 8.5KB</strong>、<code>SystemdCgroup = false</code> 在第 90 行。判断命令有没有生效只看一个数：<code>wc -l /etc/containerd/config.toml</code>，31 = 没生效，286 = 生效。</li>
+<li><strong>照 1.x 的老教程找段名会找不到</strong>：containerd 2.x（本机 v2.3.6）的 CRI 插件路径已从 <code>io.containerd.grpc.v1.cri</code> 改为 <code>io.containerd.cri.v1.runtime</code>，<code>SystemdCgroup</code> 在 <code>[...runtimes.runc.options]</code> 段里，共 20 多层的缩进，<strong>用 cat 肉眼翻很容易漏</strong>，一律用 <code>grep -n "关键词" 文件</code> 定位。</li>
+</ul>
+</div>
+
+<div class="box verify" data-page-node-id="x0xxeSUHw4qmB9IXW98kpe">
+<strong data-page-node-id="ivHSt6e9Fekr9wgGdYyQts">验收标准</strong>：四台 <code data-page-node-id="Jm077hmba30bfwUjrEGy5Q">docker run hello-world</code> 都能跑出欢迎语；B/C/D <code data-page-node-id="j3aBRc88Lv1CCkMI3NsXiR">systemctl status containerd</code> 为 active。<br>
+<strong>containerd 侧加两条：</strong>4 台 <code>grep -c "SystemdCgroup = true" /etc/containerd/config.toml</code> 返回 1；<code>grep "sandbox = " /etc/containerd/config.toml</code> 显示的是 <code>registry.aliyuncs.com/...</code> 而不是 <code>registry.k8s.io/...</code>；<code>ctr -n k8s.io i ls -q | grep pause</code> 能看到 pause 镜像。<br data-page-node-id="Rll1N3vvjbHyp2NlQQXlFS">
+<strong data-page-node-id="d3eyMo3ovjuXK2eiLgPqpI">打快照</strong>：命名「Day2-运行时就绪」。
+</div>
+
+<h2 data-page-node-id="1q5FJEWBZJiCHxXm8u7RHF"><span class="day" data-page-node-id="XU8A9KHvAW4dAmTtD3iEaK">04</span>Day 3　部署 Harbor 私有镜像仓库</h2>
+<p class="goal" data-page-node-id="Txu038mJ7uoaXU8HnOMneh">B 机为主，A/C/D 配合。今天第一次接触「证书信任」，概念要多花点时间。</p>
+
+<h3 data-page-node-id="snJpOHpEzrWKELYZcTV8uB">步骤</h3>
+<ul class="chk" data-page-node-id="HyuRcFU2yck5gQUzj767uI">
+<li data-page-node-id="dsx0DC2QG6pXSsRMsR9JXx"><input type="checkbox" data-page-node-id="5IsA96FvRmIqVsW0QoTkm1"> B 机装 Docker Compose 插件（<code data-page-node-id="7DH89wUMYgeTIABphm2DsT">docker compose version</code> 能出版本号）</li>
+<li data-page-node-id="VGiAbJXedu0weGAfopoLtA"><input type="checkbox" data-page-node-id="6eM8VvVkBsVL0rxP4xPmQG"> 下载 Harbor 离线安装包 v2.15.4（已下到本地 <code data-page-node-id="d3off">harbor-offline/</code>，传 B 解压即可）</li>
+<li data-page-node-id="0O7ueWc1y474x22z1BezBJ"><input type="checkbox" data-page-node-id="F3Td3XDnXwLWXJ788Yri51"> 用 openssl 自签证书，域名写 <code data-page-node-id="THFk298w9O6v8hjBEo8sfc">harbor.local</code></li>
+<li data-page-node-id="U90LtCZwne7dstILyb88t2"><input type="checkbox" data-page-node-id="V6tUqyypCS3FRpRFoD03t8"> 改 <code data-page-node-id="ss8vHMrhe6yrmH4xp3oE2E">harbor.yml</code>：<code data-page-node-id="bSXbqVRSQ94HhRUcmzcmqu">hostname</code>、证书路径、admin 密码</li>
+<li data-page-node-id="nhhEW9rXj3YYIwFZnZVZaH"><input type="checkbox" data-page-node-id="aKXQXJVYUeG0lhF6c8F2zL"> <code data-page-node-id="wP8oAO1qao1kXVtwJTvNPo">./install.sh</code> 启动，<code data-page-node-id="MLJqB12zEs4G4BaEGYr5gQ">docker compose ps</code> 确认全部 healthy</li>
+<li data-page-node-id="ARA7QBnQV22pkluejMLc4D"><input type="checkbox" data-page-node-id="oV1gS4jmslTc5wvb7EoFp1"> A/C/D 建 <code data-page-node-id="W0IE6qwvDpB1MTVvPqn705">/etc/docker/certs.d/harbor.local/</code> 目录，把 <code data-page-node-id="ForGpvxDD9WWSkKRBix6IJ">ca.crt</code> 拷进去，<code data-page-node-id="3JwWxWP461KFFvlRirWzVO">systemctl restart docker</code></li>
+<li data-page-node-id="nVkJdMTmAdIDjqgO0HmO3e"><input type="checkbox" data-page-node-id="HUNmPCNpn60sDHbxz4L7QQ"> Harbor 建项目 <code data-page-node-id="i1pNQWThmmD8sQN9015jpL">pb</code>；宿主机 hosts 加 <code data-page-node-id="UdqzLsqHAAFkv0WiKE8plk">192.168.80.20 harbor.local</code></li>
+</ul>
+
+<div class="box ok" data-page-node-id="day3essence">
+<strong data-page-node-id="day3essencet">操作精髓（速查）</strong>
+<ol data-page-node-id="day3essencel">
+<li data-page-node-id="e1"><strong>离线包</strong>：本地 <code data-page-node-id="e1a">harbor-offline-installer-v2.15.4.tgz</code> 已下好。传 B：<code data-page-node-id="e1b">scp ... root@192.168.80.20:/root/</code> → <code data-page-node-id="e1c">tar xzf ... -C /usr/local/</code>（目录已存在则合并，不丢已有 cert/）。</li>
+<li data-page-node-id="e2"><strong>自签证书</strong>：先 <code data-page-node-id="e2a">dnf install -y openssl</code>（最小化镜像默认没装）。生成 CA + <code data-page-node-id="e2b">harbor.local</code> 证书，<strong>SAN 必须含 DNS:harbor.local</strong>，放 <code data-page-node-id="e2c">/usr/local/harbor/cert/</code>。</li>
+<li data-page-node-id="e3"><strong>配 harbor.yml</strong>：<code data-page-node-id="e3a">hostname: harbor.local</code>；<code data-page-node-id="e3b">https.certificate/private_key</code> 指向上面两个文件；改 <code data-page-node-id="e3c">harbor_admin_password</code>。其余默认不动。</li>
+<li data-page-node-id="e4"><strong>装</strong>：<code data-page-node-id="e4a">./install.sh</code> → <code data-page-node-id="e4b">docker compose ps</code> 全 healthy、443 监听即成。</li>
+<li data-page-node-id="e5"><strong>客户端信任（A/C/D）</strong>：各建 <code data-page-node-id="e5a">/etc/docker/certs.d/harbor.local/</code>、拷 <code data-page-node-id="e5b">ca.crt</code>、<code data-page-node-id="e5c">systemctl restart docker</code>。从 A 免密推最省事：先 <code data-page-node-id="e5d">scp root@192.168.80.20:/usr/local/harbor/cert/ca.crt /tmp/</code> 再分发。</li>
+<li data-page-node-id="e6"><strong>建项目 + 解析</strong>：Harbor 网页建项目 <code data-page-node-id="e6a">pb</code>（公开）；Windows hosts 加 <code data-page-node-id="e6b">192.168.80.20 harbor.local</code>（4 台 VM 的 /etc/hosts Day1 已配，不用动）。</li>
+</ol>
+<strong data-page-node-id="day3verify">端到端验证</strong>：A <code data-page-node-id="v1">docker pull nginx</code> → <code data-page-node-id="v2">tag ... harbor.local/pb/nginx:latest</code> → <code data-page-node-id="v3">push</code>；C <code data-page-node-id="v4">docker pull harbor.local/pb/nginx:latest</code> 成功 = 真通。
+</div>
+
+<h3 data-page-node-id="t1jnGzmIP1LnXrKsujnUhx">新学</h3>
+<p data-page-node-id="VrJjkpqMk9zl06syczY3Qm"><span class="tag t-a" data-page-node-id="uIO3BDeCSP0q3O74a4OUrH">自签证书 / CA 是什么</span> <span class="tag t-a" data-page-node-id="qcJEj1rOjjOW5BxizeTv4I">Docker 怎么信任私有仓库证书</span> <span class="tag t-a" data-page-node-id="jo5yDw4njCqGw6evXjOAhW">registry / project / 镜像命名规则</span></p>
+
+<div class="box warn" data-page-node-id="HH1EZAASClCCPABSPLl9Gi">
+<strong data-page-node-id="QXJrtcJA7zAbTqCXagwLmT">今天会踩的坑</strong>
+<ul data-page-node-id="lmr9ZixTKIFgh9ehDbKq5r">
+<li data-page-node-id="famaYSC2GEWT2XCJAq6Lo2"><strong data-page-node-id="EiWGp3syXdQmEw4zkGtZZF">证书目录名必须和域名一字不差</strong>：<code data-page-node-id="Cu80DLTumuSGh9FqCruoRw">/etc/docker/certs.d/harbor.local/</code>，写成 <code data-page-node-id="wkSzqxQXrXyPdtwRUwsqhG">harbor.local:443</code> 或其他都会报 x509 错误。</li>
+<li data-page-node-id="oFKnubMLlu9dRkmGTkspDk"><strong data-page-node-id="eJbe4LDR5EOqUjek7nFiRV">docker login 报 443 拒绝</strong>：90% 是 ca.crt 没拷对或没重启 docker。</li>
+<li data-page-node-id="O2LYPGZTAxt2Mf8KINX8H2"><strong data-page-node-id="TRPlNOsxeFT0GWmGTiLrk9">Harbor 起来但容器 unhealthy</strong>：先看 <code data-page-node-id="vSKAc18EAXLDwZPnor5kit">docker compose logs</code>，多半是磁盘或内存不够（B 机给了 5G 就是防这个）。</li>
+</ul>
+</div>
+
+<div class="box verify" data-page-node-id="eIlE2mA2FXlvzBDnArvszJ">
+<strong data-page-node-id="Q6wsDU2upVBti3EIQKasaU">验收标准</strong>：① 宿主机浏览器能打开 <code data-page-node-id="yyx3kmIU0DEGHEapqayK7i">https://harbor.local</code> 并登录；② A 机 <code data-page-node-id="nXG75zEy6l4VRhdkCjLFpZ">docker login harbor.local</code> 成功 → tag 并 push 一个 nginx 镜像；③ <strong data-page-node-id="KPuiNwcSjhUn46AFB1SBeb">C 机能把这个镜像 pull 下来</strong>（这一步才是真的通了）。<br data-page-node-id="6ZrbeOve09SQAi3OemcL40">
+<strong data-page-node-id="zaY8BC60Yp7L1M3CQVNLPi">打快照</strong>：命名「Day3-Harbor通」。
+</div>
+
+<h2 data-page-node-id="3DFcHEEMJyBceqEIFmb9l2"><span class="day" data-page-node-id="VBAQBDftzIpLaIqEpnlIGr">05</span>Day 4　写业务应用 + 备份脚本（先单机跑通）</h2>
+<p class="goal" data-page-node-id="W1ELBIFjT2lZ43zrKHJHcA">这一步千万别跳过直接上 K8s。先在单机跑通，后面所有问题才能判断是"应用的问题"还是"K8s 的问题"。</p>
+
+<h3 data-page-node-id="2AjGTmkF4XBh0d44pYTymK">步骤</h3>
+<ul class="chk" data-page-node-id="74Nc0U4FuVmHEQpLsbRman">
+<li data-page-node-id="aD1jKN0PWLwSuZvSIUePSb"><input type="checkbox" data-page-node-id="Unlq3Mwq3QOymaYyrdegrQ"> 在 A 机 <code data-page-node-id="tUi02dkEDcStuOcbh1AsKh">/soft/app</code> 写极简 Flask 待办应用 <code>app.py</code>（增删改查 + MySQL 持久化；DB 配置从环境变量读 <code>DB_HOST/DB_USER/DB_PASS/DB_NAME</code>，默认连服务名 <code>mysql</code>）</li>
+<li data-page-node-id="d8LCxfCAaVHEgBRzDvXwmH"><input type="checkbox" data-page-node-id="ReLL3qHkooRIorODPydOFC"> 写 <code data-page-node-id="tUi02dkEDcStuOcbh1AsKh">Dockerfile</code>：基础镜像 <code>python:3.11-slim</code>（3.9 已 EOL），先 <code>COPY requirements.txt</code> 再 <code>COPY app.py</code>（利用层缓存），<code>pip install</code> 加 <code>-i https://pypi.tuna.tsinghua.edu.cn/simple</code></li>
+<li data-page-node-id="d8lc2"><input type="checkbox" data-page-node-id="ReLL3qHkooRIorODPydOFCb"> <code data-page-node-id="KD4NM69PNCEetnjKkAIGk9">requirements.txt</code> 必须含 <code>flask</code> + <code>pymysql</code> + <code>cryptography</code>（MySQL 8 认证要用，缺了容器会反复重启）</li>
+<li data-page-node-id="ldRWAXVOECqHKqBHBvDaVF"><input type="checkbox" data-page-node-id="XFB1nIUAt3231OW1dO4xf8"> 写 <code data-page-node-id="KD4NM69PNCEetnjKkAIGk9">docker-compose.yml</code>：两服务 <code>app</code>（build，容器名 <code>pb-app</code>）+ <code>mysql</code>（mysql:8，容器名 <code>pb-mysql</code>）；mysql 挂 volume；app 用 <code>depends_on: condition: service_healthy</code> 等 mysql 就绪</li>
+<li data-page-node-id="qXRmj1Ni8s6pbA5RK82c1F"><input type="checkbox" data-page-node-id="O80cZEM5mdREzd8rwMh8HF"> <code data-page-node-id="dkeaXiPNXEBFduvrFmFzed">docker compose up -d --build</code>，浏览器访问 <code>http://192.168.80.10:5000</code> 增删改查</li>
+<li data-page-node-id="HCqHKbZPkWaXcZAgTFTmpW"><input type="checkbox" data-page-node-id="NAe9DSZnWXInV5RK2YuMBG"> 写备份脚本 <code data-page-node-id="9vfLrAw83XU4zypcf8gt5Q">/opt/backup/mysql_backup.sh</code>：<code>docker exec pb-mysql /usr/bin/mysqldump</code> + 日期命名 + <code>find -mtime +7 -delete</code> 留 7 天 + 写 <code>backup.log</code></li>
+<li data-page-node-id="HCqHKbZPkWaXcZAgTFTmpW2"><input type="checkbox" data-page-node-id="NAe9DSZnWXInV5RK2YuMBG2"> <code data-page-node-id="W4gsGeekJbijMBAvxSNwyx">crontab -e</code> 加 <code data-page-node-id="XGv86KVFaHuPDT62oSquae">0 2 * * * /opt/backup/mysql_backup.sh</code></li>
+<li data-page-node-id="3SMqpcaEFIcUwQ2AXM4nTC"><input type="checkbox" data-page-node-id="S4LuSo2zgfM0oKzGKmzVgH"> <strong data-page-node-id="QaKKP0GIltIs7AvaVmrSjD">恢复演练</strong>：<code>docker exec pb-mysql mysql -e "DROP TABLE tasks;"</code> → 浏览器 500 → <code>docker exec -i pb-mysql mysql &lt; 备份.sql</code> 恢复 → 刷新正常</li>
+</ul>
+
+<h3 data-page-node-id="9G2RLgIS2FUX0pS4A0tts8">新学</h3>
+<p data-page-node-id="TvRWSECSigGqwMx59HByKg"><span class="tag t-b" data-page-node-id="lpiH5MDUWKENz7N1kjUcUB">Dockerfile 层缓存</span> <span class="tag t-b" data-page-node-id="CoRof85qf7fcssYkDEqrEd">compose 编排 + healthcheck</span> <span class="tag t-b" data-page-node-id="TWjD8o1GERT7b8If6l9umi">mysqldump / 备份恢复</span> <span class="tag t-b" data-page-node-id="SLSRWzeVZj6ll0NCUZRJYp">crontab / RPO 概念</span></p>
+
+<div class="box warn" data-page-node-id="aUs0z7TkZz9MdpFClHV44N">
+<strong data-page-node-id="csh1CEs7KvSqZXFg0pQNek">今天会踩的坑</strong>
+<ul data-page-node-id="4V98cO39LMgaYYTIUmWiG1">
+<li data-page-node-id="5enKRN7aP2hSE0XF5SNEwH"><strong data-page-node-id="iX3zQCp1dksGFHIiE5exdX">SWR 不代理 python 等镜像</strong>：华为云 SWR 只预置 mysql/nginx/hello-world，<code>docker build</code> 拉 <code>python</code> 会 <code>not found</code>。A 机（构建机）<code>daemon.json</code> 的 <code>registry-mirrors</code> 已叠加 Daocloud 通用代理 <code>https://docker.m.daocloud.io</code>（其余国内源在本机网络不可达）。</li>
+<li data-page-node-id="r1"><strong data-page-node-id="r2">pb-app 反复 Restarting</strong>：报错 <code>'cryptography' package is required for caching_sha2_password</code>。MySQL 8 默认认证插件是 <code>caching_sha2_password</code>，PyMySQL 需要 <code>cryptography</code> 包。修法：<code>requirements.txt</code> 加 <code>cryptography</code> 后重建镜像（已固化，最稳）。</li>
+<li data-page-node-id="r3"><strong data-page-node-id="r4">pip 拉包极慢甚至回溯失败</strong>：容器内 <code>pip install</code> 默认连官方 PyPI，A 机网络慢到 resolver 回溯到 2016 年老版本。修法：Dockerfile 的 pip 命令加 <code>-i https://pypi.tuna.tsinghua.edu.cn/simple</code>。注意这跟 docker 镜像源是两回事。</li>
+<li data-page-node-id="r5"><strong data-page-node-id="r6">粘脚本无法执行（CRLF）</strong>：从聊天/Windows 粘贴的脚本带 <code>\r</code>，<code>./脚本</code> 报"找不到需要的文件"。修法：<code>dos2unix 脚本</code> 或 <code>sed -i 's/\r$//' 脚本</code>。</li>
+<li data-page-node-id="ZFcxJPA13paevrxf1nXL16"><strong data-page-node-id="dggC5dRiuTlADsf705a7m8">备份脚本 cron 里跑不了</strong>：cron 的 PATH 极简，<code>docker</code> 找不到。修法：脚本开头 <code>export PATH=...</code> 兜底，且容器内 mysqldump 用绝对路径 <code>/usr/bin/mysqldump</code>。</li>
+<li data-page-node-id="r7"><strong data-page-node-id="r8">删表后浏览器 500，不是空列表</strong>：<code>init_db()</code> 只在容器启动时跑一次，表没了不会自动重建 → Flask 抛异常回 500。这正是"库炸了服务挂了"的真实表现；用备份恢复后刷新即好。同时记住 <strong>RPO</strong>：只能恢复到"上一次备份时刻"，备份之后新增的数据会丢。</li>
+</ul>
+</div>
+
+<div class="box ok" data-page-node-id="day4essence">
+<strong data-page-node-id="day4essencet">操作精髓（速查）</strong>
+<ol data-page-node-id="day4essencel">
+<li data-page-node-id="d4e1"><strong>镜像源</strong>：A 机构建机 <code>daemon.json</code> 用 <code>["https://docker.m.daocloud.io","https://swr.cn-north-4.myhuaweicloud.com"]</code>，改完 <code>systemctl restart docker</code>。</li>
+<li data-page-node-id="d4e2"><strong>三件套</strong>：<code>python:3.11-slim</code> + <code>requirements.txt</code> 含 <code>cryptography</code> + pip 加 <code>-i https://pypi.tuna.tsinghua.edu.cn/simple</code>。</li>
+<li data-page-node-id="d4e3"><strong>起服务</strong>：<code>cd /soft/app &amp;&amp; docker compose up -d --build</code>；看 <code>docker compose ps</code>（pb-app Up、pb-mysql healthy）。</li>
+<li data-page-node-id="d4e4"><strong>备份</strong>：<code>/opt/backup/mysql_backup.sh</code>（mysqldump + 日期 + 留 7 天 + 日志）；<code>crontab -e</code> 加 <code>0 2 * * * /opt/backup/mysql_backup.sh</code>。</li>
+<li data-page-node-id="d4e5"><strong>恢复</strong>：<code>docker exec -i pb-mysql /usr/bin/mysql -uroot -p密码 &lt; 备份.sql</code>（注意 <code>-i</code> 让 docker 从 stdin 读）。</li>
+</ol>
+</div>
+
+<div class="box verify" data-page-node-id="cyhRGWMDkeZBdDc1FIp2Lr">
+<strong data-page-node-id="tKGJ10H3qDdiObpnt5xKJ4">验收标准</strong>：① 浏览器能增删改待办；② A 机内 <code>curl http://127.0.0.1:5000/</code> 返 <strong>HTTP 200</strong> 且页面含"待办"；③ <code>/opt/backup/</code> 下出现带日期的 .sql 文件、<code>backup.log</code> 记"备份成功"；④ <strong data-page-node-id="V4RUt5KoAz5lJWgbdWC7IK">删表后能用备份完整恢复</strong>、刷新页面恢复。<br data-page-node-id="0zd22ZmuuZdN0dAkZqIjFe">
+<strong data-page-node-id="rE4O1o1VlfkEQwmhaDwGol">打快照</strong>：命名「Day4-应用跑通」。
+</div>
+
+<h2 data-page-node-id="BXFaGHdPvDRj0JEDViDE7D"><span class="day" data-page-node-id="3NEZZ6W66pX4qPM6Zm9JQ1">06</span>Day 5　搭 K8s 集群（最硬的一天）</h2>
+<p class="goal" data-page-node-id="6A0PEnl7lM7BL1KXBNkk1g">今天最容易卡，留出整块时间。卡住超过 4 小时就停，第二天带着清醒脑子重试。</p>
+
+<h3 data-page-node-id="TsFUMdfi6lrHI0OrBFKzjM">步骤</h3>
+<ul class="chk" data-page-node-id="nCVg28wJzADZFCwGDY7lxF">
+<li data-page-node-id="4GaFZkUTRH9CVjao2XiAbL"><input type="checkbox" data-page-node-id="tBsryGuwN3QHG8BdmmhcWc"> B/C/D 装 kubeadm / kubelet / kubectl（阿里云 kubernetes 源，<strong>版本锁 1.32.x</strong>）
+<pre><code>cat &gt; /etc/yum.repos.d/kubernetes.repo &lt;&lt;EOF
+[kubernetes]
+name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.32/rpm/
+enabled=1
+gpgcheck=0
+EOF
+dnf install -y kubelet kubeadm kubectl
+systemctl enable kubelet   # 先别 start，init 之前起不来是正常的</code></pre>
+阿里云源里 v1.26~v1.37 都在，改 URL 里的版本号就能换；Rocky 10 内核 6.12，建议不低于 1.31。</li>
+<li data-page-node-id="0zctLvhQRgEvQ8JGt4HSaF"><input type="checkbox" data-page-node-id="EJipNTHiVf9v96XCwHHGwA"> B 机 <code data-page-node-id="zSFikNLA73NE3NafiYNeGO">kubeadm init</code>：<code data-page-node-id="38kr6IIDMoQe0tVqXy7UjB">--image-repository registry.aliyuncs.com/google_containers</code>、<code data-page-node-id="U8aX0vEaSdVFDZGXsGYH5y">--pod-network-cidr=10.244.0.0/16</code>、<code data-page-node-id="4Xxg5MPA9BP7ma2uqYTP9Y">--kubernetes-version=v1.32.x</code></li>
+<li data-page-node-id="gZz8Z0kYAMMD1M8qTsO3If"><input type="checkbox" data-page-node-id="qCmZqokrkLgLSNEDJozLLV"> 按 init 输出提示，把 admin.conf 拷到 <code data-page-node-id="g6hV21bulUm5ojM78vljig">~/.kube/config</code></li>
+<li data-page-node-id="4Cc06ntrtpUFD3cBQzSX8Z"><input type="checkbox" data-page-node-id="EDkCnsbTnNwm2KEuXkXyf3"> C/D 执行 <code data-page-node-id="XK0CEw3XRCANmEEG8Ghcoq">kubeadm join ...</code>（token 24 小时有效，过期要重新生成）</li>
+<li data-page-node-id="5xAH7c0PIltOA19HPpaKJa"><input type="checkbox" data-page-node-id="tv1rb3pfztlltQRoi5zbHf"> 装 Calico：<strong data-page-node-id="w17n7WimBGNTL8pOVQkTuC">先把 <code data-page-node-id="BfLj8cbLw348JObzSSyCgi">CALICO_IPV4POOL_CIDR</code> 改成 <code data-page-node-id="u6GNfqOXXzC9DhosjxrFow">10.244.0.0/16</code></strong> 再 apply
+<pre><code># 下载 manifest（raw.githubusercontent.com 不通就回 Day 2 镜像源思路换源，或让我直接推处理好的 yaml）
+curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
+# 改 Pod 网段，必须和 kubeadm init 的 --pod-network-cidr 一致，否则 Pod 之间永远不通
+sed -i 's#192.168.0.0/16#10.244.0.0/16#g' calico.yaml
+kubectl apply -f calico.yaml
+# 盯状态：kubectl get pods -n kube-system -w</code></pre>
+<strong class="hl-red">必现坑：Calico 镜像在 docker.io/calico/*，SWR 不代理、docker.io 直连超时 → calico-node 一直 ImagePullBackOff。</strong>修法见下方「今天会踩的坑」第 6、7 条（给 docker.io 配 Daocloud + 启用 containerd config_path）。</li>
+<li data-page-node-id="tP4GJil2A227s5dTcyRHwZ"><input type="checkbox" data-page-node-id="N5ysdFULIPRNosYB9ztFFS"> 等几分钟，<code data-page-node-id="V2TDpoJu11FvtlHysPoW3J">kubectl get pods -n kube-system</code> 全部 Running</li>
+</ul>
+
+<div class="box ok" data-page-node-id="day5essence">
+<strong>操作精髓（速查）</strong>
+<ul>
+<li><strong>装工具</strong>：<code>cat &gt; /etc/yum.repos.d/kubernetes.repo</code> 写阿里云源（URL 里锁 <code>v1.32</code>）→ <code>dnf install -y kubelet kubeadm kubectl</code> → <code>systemctl enable kubelet</code>（先不 start）。</li>
+<li><strong>B 机 init</strong>：<code>kubeadm init --image-repository registry.aliyuncs.com/google_containers --pod-network-cidr=10.244.0.0/16 --kubernetes-version=v1.32.x</code>。init 后：<code>mkdir -p $HOME/.kube &amp;&amp; cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</code>（root 可省 <code>chown</code> 那句）。</li>
+<li><strong>C/D join</strong>：每台<strong class="hl-red">单独</strong>敲 init 输出的 <code>kubeadm join ...</code>（别用同步输入同时发两台，已加入的节点会报 <code>already exists</code>）；token 24h 过期后 B 机 <code>kubeadm token create --print-join-command</code> 重生成。</li>
+<li><strong>装 Calico</strong>：<code>curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml</code> → <code>sed -i 's#192.168.0.0/16#10.244.0.0/16#g' calico.yaml</code> → <code>kubectl apply -f calico.yaml</code>。</li>
+<li><strong class="hl-red">Calico 镜像拉不到（必现）</strong>：docker.io/calico/* 经 SWR/直连都拉不动。修法：B/C/D 三台启用 containerd <code>config_path</code> 并给 <code>docker.io</code> 加 Daocloud 镜像（见 Day 2「配置镜像源」与下方坑框），<code>systemctl restart containerd kubelet</code> 后删 Calico Pod 重建。</li>
+<li><strong>验收</strong>：<code>kubectl get nodes</code> 三台 Ready；起两个<strong>不同节点</strong>的 busybox <code>ping</code> 互通 = 跨节点网络真通。</li>
+</ul>
+</div>
+
+<h3 data-page-node-id="lPgrcvfWtPYGd4AJPhIBVk">新学</h3>
+<p data-page-node-id="BCNEGwXmqq2GqG8wjwfFIo"><span class="tag t-a" data-page-node-id="DzwWfHOCpaxTXTxAKsvx8j">kubeadm / kubelet / kubectl 各自干什么</span> <span class="tag t-a" data-page-node-id="xL6A9wDtPJb4Tzacjwk8R0">CNI 网络插件</span> <span class="tag t-a" data-page-node-id="8G1DzQUQBy5n5a0BHDPE4R">Pod 网段与 Service 网段</span></p>
+
+<div class="box danger" data-page-node-id="GFqkYgU7jTxmESJI2AEdt1">
+<strong data-page-node-id="wDh9AiErLaFv8MSJM9xR7V">今天会踩的坑（全是硬坑）</strong>
+<ul data-page-node-id="ySHyDzQNpyhOMWD1vcrgLo">
+<li data-page-node-id="3qtouOdLk1PslDneKT3sLV"><strong data-page-node-id="MH9uAUBVAXXu6N0CVdGjnB">镜像拉不动</strong>：k8s.gcr.io 国内访问不了，init 必须加 <code data-page-node-id="XyMfrxdVrAVsbCK2dBxnVk">--image-repository registry.aliyuncs.com/google_containers</code>。</li>
+<li data-page-node-id="ENbpEeet9Vjl3mQwhhirS9"><strong data-page-node-id="L0VCCQ2r0oEVH6A60DqgUH">Pod 网段撞车</strong>：Calico 默认 192.168.0.0/16 和 VMware NAT 网段重叠，Pod 之间永远不通。<strong data-page-node-id="AXAm8zS5m2UCQ1dgnN9uQB">必须改成 10.244.0.0/16</strong>。</li>
+<li data-page-node-id="EJiBifvpsiFOcliBh5Kjkp"><strong data-page-node-id="6vwgwr08YQ3IRX734Ei68I">swap 没关干净</strong>：kubelet 起不来，<code data-page-node-id="J1FrAlvxzNwDhbhmDOoJG2">journalctl -u kubelet</code> 里能看到。</li>
+<li data-page-node-id="gUGU1FljCMxjG9jajDWwmD"><strong data-page-node-id="IOXmTQm5NOfEmGTm1eFokL">cgroup driver 不一致</strong>：Day 2 统一成 systemd 就是防这个。</li>
+<li data-page-node-id="L2X90WJ0zBt8vsulDk9jfN"><strong data-page-node-id="TRx4A55kADJAyKhuOV63G0">token 过期</strong>：B 机上 <code data-page-node-id="oSjtLuNCkrfBTTI5JiEtxi">kubeadm token create --print-join-command</code> 重新生成。</li>
+<li data-page-node-id="calicoimg5"><strong class="hl-red">Calico 镜像拉不动（必现）</strong>：Calico v3.28 镜像在 <code>docker.io/calico/*</code>（不是 quay.io）。B/C/D 的 containerd 对 docker.io 直连超时 + SWR 不代理 → <code>Init:ImagePullBackOff</code>。修法：给 docker.io 配 Daocloud 通用代理（Day 2「配置镜像源」已含此步；实测 <code>docker.m.daocloud.io</code> 可达）。</li>
+<li data-page-node-id="cfgpath5"><strong class="hl-red">containerd mirror 写错 = 等于没配</strong>：光写 <code>server = "镜像站"</code> 不算镜像源，必须写 <code>[host."https://docker.m.daocloud.io"] capabilities = ["pull","resolve"]</code> 段；且 <code>config_path</code> 必须在主 <code>config.toml</code> 里启用（Day 2 曾因靠 conf.d drop-in 没生效，certs.d 整盘休眠，今天才暴露）。</li>
+</ul>
+</div>
+
+<div class="box verify" data-page-node-id="2J0AtkRSk1ZZ5nnFIh4Dei">
+<strong data-page-node-id="aNgedGt6ZNzFnPFntmVWbl">验收标准</strong>：① <code data-page-node-id="QKbCucZ0DBQLqio0qZxnAB">kubectl get nodes</code> <span class="hl-green">三台全是 Ready</span>；② 起两个 busybox Pod 落在<strong data-page-node-id="zNLAWHlYECEIxQPYypKJxa">不同节点</strong>，互相 ping 通（这一步证明跨节点网络真通了）；③ <code>kubectl get pods -n kube-system</code> 里 <span class="hl-green">coredns 也 Running</span>（说明 coredns 这类核心镜像有离线来源；<strong>注意：SWR 并不代理 registry.k8s.io 的普通镜像</strong>，Day 7 的 ingress-nginx 镜像要靠离线导入 tar，详见 Day 7）。<br data-page-node-id="Ha9W1etNwvyi4YueXS0azC">
+<strong data-page-node-id="wrRDwhS3jDQ4ZDPMawL5lt">打快照</strong>：命名「Day5-集群Ready」。过了今天，最难的一半就结束了。
+</div>
+
+<h2 data-page-node-id="SkXovPftv4mvYyEFSUhxzt"><span class="day" data-page-node-id="4KUU3lOPSRFOBaWZeYu6xc">07</span>Day 6　应用搬上 K8s</h2>
+<p class="goal" data-page-node-id="4vQqotaWktzdKltPNalLes">把 Day 4 单机跑通的应用，用 K8s 的方式重新部署一遍。<strong>本质就一件事：让 app 和 mysql 以 K8s 资源的形态跑起来</strong>——Day 3 的 Harbor（存镜像）和 Day 5 的集群（提供运行环境）都是为今天铺的路。<strong class="hl-green">2026-10-12 已完整跑通一次</strong>，下面每条步骤后面都附了本次实测值。</p>
+
+<div class="box ok" data-page-node-id="d6facts">
+<strong>本次实测值速查（照抄即可，省去试错）</strong>
+<table>
+<tr><th>项目</th><th>本次实测值</th><th>说明</th></tr>
+<tr><td>StorageClass</td><td><code>local-path</code></td><td>rancher.io/local-path，<strong class="hl-red">不带 (default) 标记</strong>→ PVC 必须显式写它</td></tr>
+<tr><td>provisioner 镜像</td><td><code>rancher/local-path-provisioner:v0.0.37</code></td><td>Pod 落在 worker2</td></tr>
+<tr><td>命名空间</td><td><code>todo</code></td><td>app / mysql 全在这</td></tr>
+<tr><td>拉私有镜像的 Secret</td><td><code>harbor-pull</code>（docker-registry 类型）</td><td><strong>必须建在 todo 下</strong>；用命令建，不在 yaml 里</td></tr>
+<tr><td>应用配置</td><td>ConfigMap <code>todo-config</code></td><td>DB_HOST=<code>mysql</code>、DB_NAME=<code>pb</code></td></tr>
+<tr><td>数据库密码</td><td>Secret <code>todo-secret</code>（Opaque）</td><td>DB_USER=<code>pb</code> / DB_PASS=<code>&lt;db_password&gt;</code> / MYSQL_ROOT_PASSWORD=<code>&lt;mysql_root_password&gt;</code></td></tr>
+<tr><td>MySQL</td><td>Deployment <code>mysql</code>＋PVC <code>mysql-pvc</code>(1Gi)＋Service <code>mysql:3306</code></td><td>单副本；<strong>Service 名必须是 <code>mysql</code></strong>（app 靠 DB_HOST=mysql 找它）</td></tr>
+<tr><td>应用</td><td>Deployment <code>app</code>（<code>harbor.local/pb/app:v1</code>）＋Service <code>app:5000</code></td><td>ClusterIP</td></tr>
+<tr><td>Pod 落点</td><td>app 与 mysql 都在 <strong>worker1</strong></td><td>非强制，调度到哪台都行</td></tr>
+<tr><td>应用 ClusterIP</td><td><code>10.104.114.30:5000</code></td><td>重建会变；Day 7 的 Ingress 指 <code>app:5000</code></td></tr>
+</table>
+</div>
+
+<h3 data-page-node-id="sBZ3G1ck1u14OYgjKIXNh1">步骤</h3>
+<ul class="chk" data-page-node-id="LykesG5WQC5F9QAcHuQ2lU">
+<li data-page-node-id="WqKyFC53VFiT0uKdUlGUA9"><input type="checkbox" data-page-node-id="SWDRF1odVdbaATnlaX4fYw"> 装 local-path-provisioner，提供默认 StorageClass（不然 PVC 会一直 Pending）<br><span class="small">本次：装出的镜像是 <code>rancher/local-path-provisioner:v0.0.37</code>；<code>kubectl get sc</code> 里 <code>local-path</code> <strong>没有 (default) 标记</strong>，所以下面 PVC 必须显式写 <code>storageClassName: local-path</code>，否则会一直 Pending。</span></li>
+<li data-page-node-id="cuPZEyvCys6ReXdNKi1x0Z"><input type="checkbox" data-page-node-id="aeJQoojvtAakShC8SSgZF8"> 创建 namespace <code data-page-node-id="Sbx5gJaiBthDfDvzlyyDjH">todo</code><br><span class="small">本次：app、mysql、ConfigMap、Secret、PVC 全部放在 <code>todo</code> 下。</span></li>
+<li data-page-node-id="ua5JbDDpDmJHbeBG8KHZSD"><input type="checkbox" data-page-node-id="z3AX2agsov9fq2knHyP5bG"> 创建 <code data-page-node-id="fv3Os59BiELd2WobdfLS9H">imagePullSecrets</code>（docker-registry 类型，填 Harbor 账号密码）——<strong data-page-node-id="nABueVfIwSBTdI14kWDAep">必须在 todo 这个 namespace 下建</strong><br><span class="small">本次：名字叫 <code>harbor-pull</code>，Harbor 账号 <code>admin</code> / <code>&lt;your_lab_password&gt;</code>。它和下面的 <code>todo-secret</code>（数据库密码）是<strong>两个不同的 Secret</strong>，别混。</span></li>
+<li data-page-node-id="YpooVInOHOzmqVuMTAfr3n"><input type="checkbox" data-page-node-id="8xHUtjOMhFeT3QaFrnIuuB"> 写 ConfigMap（数据库地址等配置）+ Secret（MySQL 密码）<br><span class="small">本次：ConfigMap <code>todo-config</code>（DB_HOST=mysql、DB_NAME=pb）；Secret <code>todo-secret</code>（DB_USER=pb、DB_PASS=&lt;db_password&gt;、MYSQL_ROOT_PASSWORD=&lt;mysql_root_password&gt;）。</span></li>
+<li data-page-node-id="kO1g8fMjEIaHl0pVKZH0g1"><input type="checkbox" data-page-node-id="WE1hZZOZI4Jl4vi7B7BIzg"> 写 MySQL 的 Deployment + PVC + Service（单副本，挂 PVC）<br><span class="small">本次：Deployment <code>mysql</code>（镜像 <code>mysql:8.0</code>）＋PVC <code>mysql-pvc</code> 1Gi（storageClassName 显式写 <code>local-path</code>，状态 <span class="hl-green">Bound</span>）＋Service <code>mysql:3306</code>。</span></li>
+<li data-page-node-id="TsRQwkl7IvbmTMAuo7Inhb"><input type="checkbox" data-page-node-id="EVJvbH2d7dA0VAepsAHEPb"> 写 Flask 的 Deployment（镜像地址填 <code data-page-node-id="X5c6EVUhm9yCekp2BhMYz9">harbor.local/pb/app:v1</code>）+ Service<br><span class="small">本次：Deployment <code>app</code>（<code>imagePullSecrets: harbor-pull</code>）＋Service <code>app:5000</code>（ClusterIP）。<strong>首次拉起会 ImagePullBackOff</strong>，那是 Harbor 自签证书的 x509，不是账号密码错——见下方「踩坑实录」。</span></li>
+<li data-page-node-id="FTki3GKEqrE7K1d9KOKAI5"><input type="checkbox" data-page-node-id="7m3VB9J9rr5qAnQk8ZzeQ1"> <code data-page-node-id="lAdQ8JTZ7HrHYJd73ZCany">kubectl apply -f .</code>，逐个排查 Pod 状态<br><span class="small">本次：以上资源写在<strong>一个</strong> <code>day6-todo.yaml</code> 里（命名空间 / ConfigMap / Secret / PVC / mysql / app 共 8 段），一次 apply。排错用 <code>kubectl describe pod -n todo &lt;pod&gt;</code> 看 Events。</span></li>
+</ul>
+
+<div class="box ok" data-page-node-id="d6essence">
+<strong>操作精髓（速查）</strong>
+<ul>
+<li><strong>装 StorageClass</strong>：<code>kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.37/deploy/local-path-storage.yaml</code> → <code>kubectl get sc</code> 应看到 <code>local-path</code>（<strong class="hl-red">它不带 (default)</strong>，所以 PVC 里必须显式写 <code>storageClassName: local-path</code>）。</li>
+<li><strong>建命名空间</strong>：<code>kubectl create namespace todo</code>。</li>
+<li><strong>建拉镜像的 Secret</strong>（<strong>必须在 todo 下</strong>）：<br><code>kubectl create secret docker-registry harbor-pull -n todo --docker-server=harbor.local --docker-username=admin --docker-password='&lt;your_lab_password&gt;'</code></li>
+<li><strong>写资源 + apply</strong>：把 ConfigMap / Secret / PVC / mysql / app 写进 <code>day6-todo.yaml</code> → <code>kubectl apply -f day6-todo.yaml</code>。</li>
+<li><strong class="hl-red">必现坑 · x509</strong>：Harbor 是自签证书，节点 containerd 默认不信任 → app Pod <code>ImagePullBackOff</code>。修法：<strong>B/C/D 三台</strong>各建 <code>/etc/containerd/certs.d/harbor.local/hosts.toml</code>（内容 <code>server = "https://harbor.local"</code> ＋ <code>[host."https://harbor.local"]</code> 段里 <code>skip_verify = true</code>）→ <code>systemctl restart containerd</code> → 删掉 app Pod 让它重建。</li>
+<li><strong>验收</strong>：<code>kubectl get pods -n todo</code> 全 Running（PVC 要 Bound）→ <code>kubectl port-forward -n todo deployment/app 5000:5000</code> → 在<strong>同一台机器</strong>上 <code>curl http://127.0.0.1:5000/</code> 得 200。</li>
+</ul>
+</div>
+
+<div class="box danger" data-page-node-id="d6pit">
+<strong>踩坑实录（2026-10-12 实测，条条真踩过）</strong>
+<ul>
+<li><strong>先修 Harbor 再谈部署</strong>：VM 冷断电重启后，B 机 Harbor 的 9 个容器全变 <code>Exited</code>（compose 里虽有 <code>restart: always</code>，硬断电仍可能抽风），网页打不开。急救 <code>cd /usr/local/harbor &amp;&amp; docker compose up -d</code>；根治是建 <code>/etc/systemd/system/harbor.service</code> 让它开机自启（K8s 三件套本来就 enabled，Harbor 不是系统服务所以漏了）。</li>
+<li><strong>app Pod <code>ImagePullBackOff</code> 的真因是 x509，不是账号密码错</strong>：报错原文 <code>x509: certificate signed by unknown authority</code>。很多人会先去查 imagePullSecrets 的密码，方向就错了——Harbor 用自签证书，是<strong>节点 containerd 不信任证书</strong>，修法是上面的 certs.d。</li>
+<li><strong>镜像是「先改名、再 push」</strong>：A 机本地镜像叫 <code>app-app:latest</code>，要 <code>docker tag app-app:latest harbor.local/pb/app:v1</code> 再 <code>docker push</code>。<code>docker compose up --build</code> <strong>只在本机构建，不会自动 push 到 Harbor</strong>。</li>
+<li><strong>local-path 装完不是默认 StorageClass</strong>：<code>kubectl get sc</code> 输出里<strong>没有 <code>(default)</code> 标记</strong> → PVC 不写 <code>storageClassName</code> 就会一直 <code>Pending</code>。本次是靠 PVC 里<strong>显式写</strong> <code>storageClassName: local-path</code> 规避的。</li>
+<li><strong>port-forward 是「管道」不是「访问」</strong>：它把集群端口映射到<strong>执行命令那台机器的 localhost</strong>（本次是 master），Windows 浏览器直连不到 → 域名访问要等 Day 7 的 Ingress。</li>
+<li><strong>两个 Secret 别混</strong>：<code>harbor-pull</code>（拉镜像用，docker-registry 类型，用命令建）与 <code>todo-secret</code>（数据库密码，写在 yaml 里）是两回事。</li>
+</ul>
+</div>
+
+<h3 data-page-node-id="aVqbrkmm9sUBesRf733Bd8">新学</h3>
+<p data-page-node-id="yPHWipgTMEGR9oHUY22GpO"><span class="tag t-a" data-page-node-id="2dSrjSwFWudi82TC0j2tiw">PVC / PV / StorageClass</span> <span class="tag t-a" data-page-node-id="hIGKFlkPYsvpSAjq2yPo6t">imagePullSecrets</span> <span class="tag t-a" data-page-node-id="U0zI4yhSttAk6JuYYBqp3D">ConfigMap 与 Secret</span> <span class="tag t-a" data-page-node-id="p67yEpFkp7OKAXIsCkoSht">Deployment 与 Service</span></p>
+
+<div class="box warn" data-page-node-id="GZrLLoTIxIXDxNvi6QRmUY">
+<strong data-page-node-id="aeeXRmJB3hpGscUDuojwjC">今天会踩的坑</strong>
+<ul data-page-node-id="ElkDPhruBSvdxOMsZuU4A5">
+<li data-page-node-id="byzjcRTiC15eG6JSbeWdAa"><strong data-page-node-id="g7RKcrrqHoAmOBn4WdkhbH">ImagePullBackOff</strong>：90% 是 imagePullSecrets 没建、或建在了 default 命名空间而 Deployment 在 todo。<code data-page-node-id="byDIMcBljGrW36WL3nwi4f">kubectl describe pod</code> 看 Events 能直接定位。</li>
+<li data-page-node-id="E1IRb2MHyd9slzEegL8OGs"><strong data-page-node-id="lDNDTOaGsftSOK0siX0Mck">PVC 一直 Pending</strong>：没有 StorageClass。先装 local-path-provisioner。</li>
+<li data-page-node-id="pIRK9P3pK8eDKOGXNjrAlX"><strong data-page-node-id="rkENZ61cnLYXMrFIgXg1xf">MySQL Pod 起不来</strong>：数据目录权限问题，或 PVC 挂载覆盖了初始化脚本目录。</li>
+<li data-page-node-id="d6crypto"><strong data-page-node-id="d6cryptot">Flask 连不上 MySQL 8（caching_sha2_password）</strong>：只要用 Day 4 定稿镜像（requirements 含 <code>cryptography</code>）就没这问题，Pod 不会反复重启。若你另行 build 镜像，务必保留 <code>cryptography</code> 和 pip 清华源，否则会重踩 Day 4 的坑。</li>
+</ul>
+</div>
+
+<div class="box verify" data-page-node-id="Uivf8RjaUFHKwA0ephTUBP">
+<strong data-page-node-id="PsxwYw0JGyltM6vDBnPyDb">验收标准（5 步，按顺序做）</strong>
+<ol>
+<li><code data-page-node-id="bkvNbhLFJ8k66m3X6HrfPY">kubectl get pods -n todo</code> → app、mysql 都 <span class="hl-green">Running 1/1</span>；<code>kubectl get pvc -n todo</code> → <code>mysql-pvc</code> 是 <span class="hl-green">Bound</span>。</li>
+<li>看 app 日志确认它真连上了库：<code>kubectl logs -n todo deploy/app --tail=20</code>。<strong>注意「懒连接」陷阱</strong>——Flask 启动时并不建数据库连接，日志里可能先静悄悄，得等第一次请求才暴露问题，所以第 4 步必须真发一次请求，别只看 Pod 绿了就算过。</li>
+<li>开「管道」：<code>kubectl port-forward -n todo deployment/app 5000:5000</code>（<strong>这个终端要一直开着</strong>；它绑在 master 的 127.0.0.1，不是给浏览器直连用的）。</li>
+<li>在 master 上另开一个终端打一枪：<code>curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:5000/</code> → 期望 <code>200</code>；再看内容 <code>curl -s http://127.0.0.1:5000/ | head</code> 应返回页面 HTML。</li>
+<li>（可选，验数据真进库）<code>curl -s 'http://127.0.0.1:5000/add?title=test'</code>，再进 MySQL 看一眼：<code>kubectl exec -it -n todo deploy/mysql -- mysql -upb -p&lt;db_password&gt; pb -e 'show tables;'</code>（表名以你 app 里的建表语句为准）。</li>
+</ol>
+<strong data-page-node-id="QqKqLogrTuOtisNLIY65SD">打快照</strong>：命名「Day6-应用上云」。<br>
+<span class="small">顺带记住：port-forward 只是今天临时验收用的，它绑在 master 的 localhost，Windows 浏览器直连不到——要能<b>用域名访问</b>，就是 Day 7 的事。</span>
+</div>
+
+<h2 data-page-node-id="Kz1Pf4vSYvpovj62zPXq5P"><span class="day" data-page-node-id="4CEuzcMDMutMWvYRPKFYRk">08</span>Day 7　配置流量入口（域名访问）</h2>
+<p class="goal" data-page-node-id="sBrj4oa1bNSmMyHwRC4MGN">让浏览器用 <code data-page-node-id="Bng3OFQg0LmrvfxqmaK9uz">todo.local</code> 访问到集群里的应用。这一关要装两层“门”：<strong>集群内的 Ingress</strong>（单元门，按域名分流）＋<strong>集群外的 D 机 Nginx</strong>（小区大门，把 80 端口转进集群）。<strong class="hl-green">2026-10-13 已完整跑通一次</strong>，下面每一步后面都附了本次实测值。</p>
+
+<div class="box danger" data-page-node-id="d7rule">
+<strong>今天的头号铁律：B/C/D 三台必须同源</strong>
+<p style="margin:6px 0 0">Day 7 会动控制面，动手前先确认 <strong>B/C/D 是从同一份 Day 6 快照开机/回滚出来的</strong>。如果只回滚了 master、worker 没回滚，etcd（含 Calico 的 IP 分配、WorkloadEndpoint 记录）会和节点上真实的 Pod 对不上：新起的 Pod 虽然分到了 IP、建好了 veth，主机侧路由却没被编程，于是 Pod 连 <code>10.96.0.1:443</code> 报 <code>no route to host</code>，而同节点上的老 Pod（如 todo 应用）却完全正常。这个“一个节点两重天”的现象极难定位——务必从根上避免：<strong>三台一起回滚到同一份快照</strong>。</p>
+</div>
+
+<div class="box ok" data-page-node-id="d7facts">
+<strong>本次实测值速查（照抄即可，省去试错）</strong>
+<table>
+<tr><th>项目</th><th>本次实测值</th><th>说明</th></tr>
+<tr><td>controller 镜像</td><td><code>k8s.m.daocloud.io/ingress-nginx/controller:v1.12.7</code></td><td>109.5 MiB</td></tr>
+<tr><td>webhook 镜像</td><td><code>k8s.m.daocloud.io/ingress-nginx/kube-webhook-certgen:v1.6.3</code></td><td>18 MiB</td></tr>
+<tr><td>controller 落点</td><td><code>worker2</code>（192.168.80.22）</td><td>Deployment 未限定节点，可能落到任意一台</td></tr>
+<tr><td>admission secret</td><td><code>ingress-nginx-admission</code>（Opaque，3 项）</td><td>由 create Job 生成</td></tr>
+<tr><td>Ingress Controller ClusterIP</td><td><code>10.100.211.122</code></td><td>重建会变</td></tr>
+<tr><td><strong>NodePort</strong></td><td><strong>HTTP <code>31123</code>／HTTPS <code>31366</code></strong></td><td><strong>每次重建都变，以 <code>kubectl get svc</code> 为准</strong></td></tr>
+</table>
+</div>
+
+<h3 data-page-node-id="d7pre">开工前自检（三条必须全过，再往下做）</h3>
+<pre data-page-node-id="d7precode"><code>kubectl get nodes                 # 三台全部 Ready
+kubectl get pods -n todo          # app / mysql 全部 Running
+kubectl logs -n kube-system -l k8s-app=calico-kube-controllers --tail=20 | grep -i leak</code></pre>
+<p class="small">第三条<strong>必须为空</strong>。只要还在刷 <code>IP leak</code> / <code>Garbage collecting leaked IP address</code>，就说明控制面与数据面状态分裂——先别往下走，删掉两台 worker 的 <code>calico-node</code> Pod 让它重新同步，等它安静了再做。</p>
+<p class="small">提示：这条用 <code>-l k8s-app=calico-kube-controllers</code> 按标签选 Pod，<strong>别把 Pod 名写死</strong>（名字后缀是随机 hash，重启就变，写死会报 <code>NotFound</code>）。另外 <code>grep</code> 没有输出时退出码是 1，看着像“报错”其实是<strong>好消息</strong>——想确认可写成 <code>... | grep -i leak || echo 无泄漏</code>。</p>
+
+<h3 data-page-node-id="yOdFSYLQcKieaA8QY1fkSC">步骤</h3>
+<ul class="chk" data-page-node-id="3UG4oAJ576R91RPCba8Kwo">
+<li data-page-node-id="d7sb01"><input type="checkbox" data-page-node-id="d7ck01"> <strong>备镜像（离线导入）</strong>：把 Windows 上的 <code>controller.tar</code>、<code>webhook.tar</code> 传到 B/C/D 的 <code>/root/</code>，三台分别 <code>ctr -n k8s.io images import</code><br><span class="small">本次：三台导完 <code>ctr images ls | grep ingress-nginx</code> 各出两行。tar 是提前在 Windows 上用 <code>crane</code> 从 <code>k8s.m.daocloud.io</code> 拉下来的（见 ①）。</span></li>
+<li data-page-node-id="d7sb02"><input type="checkbox" data-page-node-id="d7ck02"> <strong>备 manifest</strong>：把 <code>桌面\linux项目\scripts\ingress-nginx.yaml</code> 传到 B 机 <code>/root/</code>，改掉三处镜像地址（对齐本地导入的名字、去掉 <code>@sha256</code>）<br><span class="small">本次：共 3 处（443 行 controller、545/600 行 certgen），一条 <code>sed</code> 搞定。改前 <code>md5sum</code> 比对本地与 B 机一致，确认文件没传坏。</span></li>
+<li data-page-node-id="d7sb03"><input type="checkbox" data-page-node-id="d7ck03"> <code>kubectl apply -f /root/ingress-nginx.yaml</code>，盯 <code>ingress-nginx</code> 命名空间里的 Pod 起来<br><span class="small">本次：<strong>一次通过</strong>，没有补 RBAC、没有 retag、没有重启。</span></li>
+<li data-page-node-id="d7sb04"><input type="checkbox" data-page-node-id="d7ck04"> 确认 <strong>controller Running 1/1</strong>，secret 已建，日志里出现 <code>successfully acquired lease</code>（选主成功）<br><span class="small">本次：controller 落 worker2；secret <code>ingress-nginx-admission</code> 存在；webhook 的 <code>caBundle</code> 已被填入。</span></li>
+<li data-page-node-id="d7sb05"><input type="checkbox" data-page-node-id="d7ck05"> 写 Ingress 资源：<code>host: todo.local</code> → 转发到 <code>todo</code> 命名空间的 <code>app:5000</code><br><span class="small">本次：<code>kubectl get ingress -n todo</code> 显示 ADDRESS=<code>192.168.80.22</code>（controller 上报的入口节点 IP，正常）。</span></li>
+<li data-page-node-id="d7sb06"><input type="checkbox" data-page-node-id="d7ck06"> 先用 ClusterIP 自测 Ingress 链路（带 <code>Host: todo.local</code> 应返回 200）<br><span class="small">本次：<code>HTTP=200</code>；<code>nginx.conf</code> 里 <code>todo.local</code> 出现 3 次，确认规则真写进 nginx 了。</span></li>
+<li data-page-node-id="d7sb07"><input type="checkbox" data-page-node-id="d7ck07"> <code>kubectl get svc -n ingress-nginx</code> 取 <strong>NodePort</strong> 端口（HTTP 那个，记下来）<br><span class="small">本次：HTTP <code>31123</code>／HTTPS <code>31366</code>。历史上三次分别是 31534、32029、31123——<strong>每次都不同，千万别沿用旧值</strong>。</span></li>
+<li data-page-node-id="d7sb08"><input type="checkbox" data-page-node-id="d7ck08"> D 机装 Nginx，<code>proxy_pass</code> 到上面那个 NodePort，<strong>并透传 <code>Host</code> 头</strong><br><span class="small">本次：<code>dnf install nginx</code>（1.26.3）。<strong>装完不会自动启动</strong>，必须再补 <code>systemctl enable --now nginx</code>，否则 80 端口没人监听、curl 返回 <code>000</code>。</span></li>
+<li data-page-node-id="d7sb09"><input type="checkbox" data-page-node-id="d7ck09"> 宿主机 hosts 加 <code>192.168.80.22 todo.local</code>，浏览器验收<br><span class="small">本次：加完 <code>ipconfig /flushdns</code> 再开 <code>http://todo.local</code>，页面正常。与已有 <code>harbor.local</code> 那行<strong>不冲突</strong>。</span></li>
+</ul>
+
+<h3 data-page-node-id="d7img">① 备镜像：离线导入（不依赖当天网络）</h3>
+<pre data-page-node-id="d7imgcode"><code># Windows 侧：把 桌面\linux项目\scripts\ 下的 controller.tar、webhook.tar 用 WinSCP/WindTerm 传到 B/C/D 的 /root/
+# B/C/D 三台各执行：
+ctr -n k8s.io images import /root/controller.tar
+ctr -n k8s.io images import /root/webhook.tar
+ctr -n k8s.io images ls | grep ingress-nginx</code></pre>
+<p class="small"><strong>不用解压！</strong><code>ctr images import</code> 直接读取 docker-save 格式的 tar（里面是 <code>manifest.json</code> + 各层 blob），传上去直接 import 就行，千万别手动 <code>tar -xvf</code>——解压出来只会是一堆用不上的 blob。传文件用 WinSCP / WindTerm 的 SFTP 拖拽，或 Windows PowerShell 一条命令：<code>scp "C:\Users\one\Desktop\linux项目\scripts\controller.tar" root@192.168.80.20:/root/</code>（IP 换成对应节点）。</p>
+<p class="small"><strong>这两个 tar 是从哪来的？</strong>本环境 <code>registry.k8s.io</code> 只是跳转站，真身在 Google 的 <code>europe-west3-docker.pkg.dev</code>（GAR），被墙——在线怎么都拉不到。所以提前在能出网的 Windows 上，用 <code>crane</code>（Google 的 go-containerregistry 工具，本次用 <strong>v0.22.1</strong>，从 GitHub Releases 下载，放在 <code>桌面\linux项目\scripts\crane.exe</code>），从可达的镜像站 <code>k8s.m.daocloud.io</code>（DaoCloud）拉下来并直接存成 docker-save 格式的 tar：</p>
+<pre><code># Windows PowerShell，先 cd 到 桌面\linux项目\scripts\
+.\crane pull --platform linux/amd64 "k8s.m.daocloud.io/ingress-nginx/controller:v1.12.7" controller.tar
+.\crane pull --platform linux/amd64 "k8s.m.daocloud.io/ingress-nginx/kube-webhook-certgen:v1.6.3" webhook.tar</code></pre>
+<p class="small">为什么用 <code>crane</code> 而不是手搓 curl/python：镜像站会先要求 bearer 鉴权、再 302 跳到 S3 签名地址，<strong>跳转时必须把 Authorization 头丢掉</strong>，否则 403。crane 把这些都处理好了，存出来的正好是 <code>ctr images import</code> 能吃的格式。<br><strong>tar 留在 Windows 磁盘上，VM 怎么回滚都不受影响——这是随时能重做 Day 7 的底牌。</strong></p>
+
+<h3 data-page-node-id="d7mf">② 备 manifest：改镜像地址</h3>
+<pre data-page-node-id="d7mfcode"><code># 把桌面 scripts\ingress-nginx.yaml 传到 B 机 /root/ 后，在 B 机执行（一条改三处）：
+sed -i -E 's#registry\.k8s\.io/ingress-nginx/(controller|kube-webhook-certgen):(v[0-9.]+)@sha256:[0-9a-f]+#k8s.m.daocloud.io/ingress-nginx/\1:\2#g' /root/ingress-nginx.yaml
+grep -n 'image:' /root/ingress-nginx.yaml      # 确认三行已改对</code></pre>
+<p class="small">官方 manifest 把镜像写成 <code>registry.k8s.io/...@sha256:xxxx</code>。这里要改成和本地导入的镜像<strong>完全一致</strong>的名字，并且<strong>只留 tag、去掉 <code>@sha256</code></strong>。两个原因：① 名字对不上，kubelet 找不到本地镜像；② 只要写了 <code>@sha256</code>，kubelet 就按那个具体摘要去找，本地导入的摘要和它对不上，就转去联网拉——又拉不到，于是 <code>ImagePullBackOff</code>。</p>
+<p class="small"><strong>本次实测</strong>：官方 pin 的摘要是 <code>6ca5f62…</code>／<code>3d671cf…</code>，而 daocloud 侧导入进来的实际摘要是 <code>87a4f4f8…</code>／<code>e93b8e2e…</code>——<strong>两边本来就不一样</strong>，所以去掉摘要、按 tag 匹配是唯一稳妥做法。</p>
+<p class="small"><strong>用哪份 manifest？</strong>用官方<strong>完整版</strong>（本仓库 <code>scripts/ingress-nginx.yaml</code>）。里面的 RBAC 是齐的（Role/RoleBinding/ClusterRole 全有，leader 选举的 <code>leases</code> 走命名空间级 Role 授权），并且带 <code>ValidatingWebhookConfiguration</code>。<strong>别用 ACS 裁剪版</strong>——那种版本常缺 <code>leases</code>／<code>events</code>／<code>ingressclasses</code>／<code>namespaces</code>，也没有命名空间级 Role，controller 会选不出 leader、不同步 Ingress。</p>
+
+<h3 data-page-node-id="d7apply">③ 部署并观察</h3>
+<pre data-page-node-id="d7applycode"><code>kubectl apply -f /root/ingress-nginx.yaml
+kubectl get pods -n ingress-nginx -w</code></pre>
+<p class="small">顺序是：先跑两个 <code>admission</code> Job（几秒，负责生成证书、给校验 webhook 盖 CA），<strong>然后</strong> controller 才能挂上它生成的 secret 起容器。所以一开始看到 admission 在跑、controller 卡 <code>ContainerCreating</code> 是正常的，别急——本次实测停在 <code>ContainerCreating</code> 就是因为 <code>MountVolume.SetUp failed: secret "ingress-nginx-admission" not found</code>，等 Job 跑完就自动好了。</p>
+<p class="small"><strong>本次实测</strong>：<code>kubectl get secret -n ingress-nginx</code> 出现 <code>ingress-nginx-admission</code>（Opaque，3 项）＝ create Job 成功。</p>
+
+<h3 data-page-node-id="d7check">④ 确认 controller 真的在工作</h3>
+<pre data-page-node-id="d7checkcode"><code>kubectl get pods -n ingress-nginx -o wide
+kubectl logs -n ingress-nginx deployment/ingress-nginx-controller --tail=20 | grep -i lease
+kubectl get lease -n ingress-nginx
+
+# 这份完整版 manifest 带 ValidatingWebhookConfiguration（failurePolicy: Fail），
+# 所以要额外确认 patch Job 也成功——它负责把 CA 填进 webhook：
+kubectl get validatingwebhookconfiguration ingress-nginx-admission \
+  -o jsonpath='{.webhooks[0].clientConfig.caBundle}' | head -c 40; echo</code></pre>
+<p class="small">日志里出现 <code>successfully acquired lease ingress-nginx/ingress-nginx-leader</code> 才算成功。controller 是“主备”模式，得先抢到 leader，才会真正把 Ingress 规则写进 nginx 配置。</p>
+<p class="small"><strong>本次实测</strong>：controller <code>1/1 Running</code>（worker2）；caBundle 输出以 <code>LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t</code> 开头（就是 base64 的 <code>-----BEGIN CERTIFICATE-----</code>）＝ patch Job 也成功了。<br>⚠️ <strong>这两个 admission Job 带 <code>ttlSecondsAfterFinished: 0</code>，一完成就自动删除</strong>，所以别去 <code>kubectl get job</code>（会 NotFound），要看 <strong>secret</strong> 和 <strong>caBundle</strong> 这两处产物。</p>
+
+<h3 data-page-node-id="d7ing">⑤ 写 Ingress 资源</h3>
+<p class="small">Ingress 必须和 <code>app</code> 服务在<strong>同一个命名空间</strong>（这里是 <code>todo</code>），否则后端名字解析不到。</p>
+<pre data-page-node-id="d7ingcode"><code>cat &gt; /root/todo-ingress.yaml &lt;&lt;'EOF'
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-ingress
+  namespace: todo
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: todo.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app
+            port:
+              number: 5000
+EOF
+kubectl apply -f /root/todo-ingress.yaml
+kubectl get ingress -n todo</code></pre>
+<p class="small"><strong>本次实测</strong>：<code>todo-ingress</code> created，CLASS=<code>nginx</code>，HOSTS=<code>todo.local</code>，ADDRESS=<code>192.168.80.22</code>（这是 controller 上报的入口节点 IP，不是错误）。<code>ingressClassName</code> 必须与 <code>kubectl get ingressclass</code> 里的名字一致（本次叫 <code>nginx</code>）。</p>
+
+<h3 data-page-node-id="d7self">⑥ 自测 Ingress 链路（先不碰 NodePort）</h3>
+<pre data-page-node-id="d7selfcode"><code>kubectl get svc -n ingress-nginx ingress-nginx-controller     # 记下 ClusterIP
+kubectl exec -n ingress-nginx deploy/ingress-nginx-controller -- grep -c 'todo.local' /etc/nginx/nginx.conf
+curl -s -m 6 -o /dev/null -w 'HTTP=%{http_code}\n' -H 'Host: todo.local' http://&lt;ClusterIP&gt;/</code></pre>
+<p class="small">返回 <code>HTTP=200</code>，说明“域名 → Ingress → Service → Pod”整条链路已通。若返回 <strong>404</strong>，是 controller 还没把规则同步进 nginx（informer 建好后要几秒），或 <code>ingressClassName</code> 与 IngressClass 名不符。</p>
+<p class="small"><strong>本次实测</strong>：<code>grep -c 'todo.local'</code> = <code>3</code>；<code>curl -H 'Host: todo.local' http://10.100.211.122/</code> = <code>HTTP=200</code>。这两条一起看最保险：前者证规则进了配置，后者证转发真通了。</p>
+
+<h3 data-page-node-id="d7np">⑦ 取 NodePort</h3>
+<pre data-page-node-id="d7npcode"><code>kubectl get svc -n ingress-nginx ingress-nginx-controller
+# PORT(S) 形如  80:31123/TCP,443:31366/TCP  → HTTP 端口 = 31123（本次实测值）
+
+# 在 D 机（NodePort 每台节点都监听）自测：
+curl -s -m 6 -o /dev/null -w 'NP=%{http_code}\n' -H 'Host: todo.local' http://127.0.0.1:31123/</code></pre>
+<p class="small"><strong>端口每次重建都会变</strong>（NodePort 由系统在 30000–32767 里自动分配），一定以这条命令的实际输出为准。若“本机通、跨节点超时”，多半是该节点 kube-proxy 规则没同步，重启该节点的 kube-proxy 即可。</p>
+<p class="small"><strong>NodePort 的关键性质</strong>：它是<strong>每个节点都监听</strong>的端口——B/C/D 三台都在这个号上接客，所以从集群外任何一台节点都能进。本次实测 D 机自己 <code>curl 127.0.0.1:31123</code> = <code>200</code>。</p>
+
+<h3 data-page-node-id="d7dn">⑧ D 机装外层 Nginx</h3>
+<p class="small">两层 Nginx 的分工：<strong>D 机的 Nginx 是“小区大门”</strong>（把外部 80 端口转进集群），<strong>Ingress 是“单元门”</strong>（按域名分流到具体应用）。缺一不可。</p>
+<pre data-page-node-id="d7dncode"><code># 在 D 机（192.168.80.22）执行
+dnf install -y nginx
+
+cat &gt; /etc/nginx/conf.d/todo.conf &lt;&lt;'EOF'
+server {
+    listen 80;
+    server_name todo.local;
+    location / {
+        proxy_pass http://127.0.0.1:31123;      # 换成第⑦步的实际 NodePort
+        proxy_set_header Host $host;            # 关键！把 Host: todo.local 透传给 Ingress
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+EOF
+
+nginx -t
+systemctl enable --now nginx
+
+# 自测
+curl -s -m 6 -o /dev/null -w 'NGINX=%{http_code}\n' -H 'Host: todo.local' http://127.0.0.1/</code></pre>
+<p class="small"><code>proxy_set_header Host $host;</code> 这一句不能省：Ingress 是<strong>按 Host 头匹配</strong>规则的，D 机 Nginx 若不把原来的 <code>todo.local</code> 透传过去，Ingress 匹配不到规则，就会落到默认的 404。</p>
+<p class="small">为什么 <code>proxy_pass</code> 写 <code>127.0.0.1</code> 而不是 <code>192.168.80.22</code>：因为 NodePort 每台节点都监听，D 机本身就是集群节点，“转发给自己本机”就够，少绕一跳，也不用写死别的节点 IP。</p>
+<p class="small"><strong>本次实测踩点</strong>：<code>dnf install nginx</code> <strong>不会自动启动服务</strong>！装完直接 <code>curl http://127.0.0.1/</code> 得到 <code>NGINX=000</code>（<code>000</code> = 连接被拒，说明 80 端口<strong>没有进程在监听</strong>，不是配置错、也不是防火墙/SELinux）。补一条 <code>systemctl enable --now nginx</code> 即可。确认三件套：<code>systemctl is-active nginx</code> 为 <code>active</code>、<code>ss -lntp | grep ':80 '</code> 有监听、<code>nginx -t</code> 为 <code>syntax is ok</code>。</p>
+
+<h3 data-page-node-id="d7hosts">⑨ 宿主机 hosts + 验收</h3>
+<pre data-page-node-id="d7hostscode"><code># Windows：开始菜单搜 cmd → 右键“以管理员身份运行” → 敲：
+notepad C:\Windows\System32\drivers\etc\hosts
+
+# 在文件末尾新起一行（IP 与域名之间至少一个空格）：
+192.168.80.22  todo.local
+
+# 验证
+ipconfig /flushdns
+ping todo.local          # 应回显 192.168.80.22</code></pre>
+<p class="small"><strong>会不会和之前的 <code>harbor.local</code> 冲突？不会。</strong>hosts 就是一张“名字 → IP”的对照表，<strong>一行管一个域名</strong>，加行不影响已有行。本次加完应是两行：<code>192.168.80.20 harbor.local</code> ＋ <code>192.168.80.22 todo.local</code>。<br>只有<strong>同一个域名写了两行、指向不同 IP</strong> 才算冲突（那时只有第一条生效、后面被静默忽略）。</p>
+<p class="small"><strong>管理员打开记事本的正确姿势</strong>：从<strong>管理员 cmd</strong> 里敲 <code>notepad &lt;路径&gt;</code>（如上一段）。<strong>别从资源管理器双击文件</strong>——双击会新起一个<strong>普通权限</strong>的记事本，保存时弹“另存为”，等于白改。判据：改完 <code>Ctrl+S</code> <strong>静默保存</strong>＝有权限；<strong>弹“另存为”</strong>＝没权限，回上一段重来。<br>另：hosts 文件<strong>没有扩展名</strong>，别存成 <code>hosts.txt</code>。免开编辑器的替代方案：管理员 PowerShell 里 <code>Add-Content C:\Windows\System32\drivers\etc\hosts "192.168.80.22  todo.local"</code>。</p>
+
+<div class="box ok" data-page-node-id="d7concept">
+<strong>概念拆解：请求是怎么一路走到应用的</strong>
+<ul>
+<li><strong>浏览器</strong>：<code>todo.local</code> 靠 Windows hosts 解析成 <code>192.168.80.22</code>（D 机）。</li>
+<li><strong>D 机外层 Nginx（:80）</strong>：小区大门。收到请求后按 <code>proxy_pass</code> <strong>转发</strong>给集群入口——这就是 <code>proxy_pass</code> 的含义：反向代理的“交给谁”。</li>
+<li><strong>ingress-nginx（NodePort :31123）</strong>：单元门。按 <code>Host: todo.local</code> 匹配路由规则，决定去找哪个 Service。</li>
+<li><strong>app Service（:5000）</strong>：按标签选中后端 Pod，转发到 Todo 应用容器。</li>
+<li><strong>一句话</strong>：<code>proxy_pass</code> = 集群外那一跳（Nginx → NodePort）；Ingress = 集群内的七层路由（按域名分流）。两者串起来，域名才真正“落到”应用上。</li>
+</ul>
+</div>
+
+<h3 data-page-node-id="h8Q0k2mKtNVISvlGKMEdOR">新学</h3>
+<p data-page-node-id="S9UWk3Nfi8QBwGidSHG6SV"><span class="tag t-b" data-page-node-id="WtkntWsAl35TRXQcP2Tprw">Ingress 与 Service 的区别</span> <span class="tag t-b" data-page-node-id="DPLgHQnPUk8NwBksEPCKQl">NodePort / ClusterIP / LoadBalancer</span> <span class="tag t-b" data-page-node-id="i7g7cDIGmxLurYMXM57TAp">七层路由（按域名分流）</span> <span class="tag t-b" data-page-node-id="d7tag">反向代理与 Host 头</span></p>
+
+<div class="box ok" data-page-node-id="d7essence">
+<strong>操作精髓（速查）</strong>
+<ul>
+<li><strong>备镜像</strong>：<code>ctr -n k8s.io images import controller.tar webhook.tar</code>（B/C/D 三台都导；tar 由 Windows 上的 <code>crane</code> 从 <code>k8s.m.daocloud.io</code> 预先拉好）。</li>
+<li><strong>改 manifest</strong>：三处 <code>image:</code> 改成 <code>k8s.m.daocloud.io/ingress-nginx/...</code>，去掉 <code>@sha256</code>；用<strong>官方完整版</strong>（RBAC 齐、带 webhook），别用 ACS 裁剪版。</li>
+<li><strong>部署</strong>：<code>kubectl apply -f ingress-nginx.yaml</code> → 先 admission Job（建 secret）→ 再 controller。</li>
+<li><strong>确认三件</strong>：controller <code>Running 1/1</code> ＋ 日志 <code>successfully acquired lease</code> ＋ webhook 的 <code>caBundle</code> 非空。</li>
+<li><strong>Ingress</strong>：<code>host: todo.local</code> → <code>app:5000</code>，与 app 同命名空间，<code>ingressClassName: nginx</code>。</li>
+<li><strong>自测</strong>：<code>curl -H 'Host: todo.local' http://&lt;ClusterIP&gt;/</code> 得 200。</li>
+<li><strong>取 NodePort</strong>：<code>kubectl get svc -n ingress-nginx</code>，<strong>每次重建都变</strong>。</li>
+<li><strong>对外</strong>：D 机 <code>dnf install -y nginx</code> ＋ <code>systemctl enable --now nginx</code>（<strong>装完不会自动起</strong>），<code>proxy_pass</code> 到 NodePort，并写 <code>proxy_set_header Host $host;</code>。</li>
+<li><strong>验收</strong>：Windows hosts 加 <code>192.168.80.22 todo.local</code>，浏览器开 <code>http://todo.local</code>。</li>
+</ul>
+</div>
+
+<div class="box danger" data-page-node-id="d7pit">
+<strong>今天会踩的坑（本次实测，条条见血）</strong>
+<ul>
+<li><strong>镜像拉不动</strong>：<code>registry.k8s.io</code> 的真身 <code>europe-west3-docker.pkg.dev</code>（GAR）被墙，在线无解 → 走第①步的离线 tar（Windows 上 <code>crane</code> 从 <code>k8s.m.daocloud.io</code> 预拉）。</li>
+<li><strong>manifest 带了 <code>@sha256</code> 摘要</strong>：本地导入的镜像摘要（<code>87a4f4f8…</code>）和官方 pin（<code>6ca5f62…</code>）本来就不同，kubelet 会转去联网拉 → <code>ImagePullBackOff</code>。改镜像名时一并去掉摘要。</li>
+<li><strong>用了裁剪版 / ACS 版 manifest 的 RBAC 缺权限</strong>：这类 manifest 常缺 <code>coordination.k8s.io/leases</code>、<code>events</code>、<code>ingressclasses</code>、<code>namespaces</code>，也没有 ns 级 Role/RoleBinding。后果是 controller <strong>选不出 leader、不同步 Ingress</strong>，日志报 <code>cannot get resource "leases"</code>。修法：<code>kubectl patch clusterrole ingress-nginx</code> 补上这些规则。<strong>用官方完整版就天然没有这个问题。</strong></li>
+<li><strong>补完 RBAC 必须重启 controller</strong>：<code>kubectl rollout restart deployment/ingress-nginx-controller -n ingress-nginx</code>。informer 若在启动时因缺权限建立失败，<strong>不会自动重试</strong>，只会一直报 <code>ingress does not contain a valid IngressClass</code>。</li>
+<li><strong>admission Job 失败不会自动重跑</strong>：一次性 Job 打光 <code>backoffLimit</code> 就躺平。修法是先 <code>kubectl delete job</code>，再重新 <code>apply</code>。</li>
+<li><strong>admission Job 是“鸡生蛋”前置</strong>：controller 要挂载 create Job 生成的 secret 才能起，所以 Job 不通 → secret 不存在 → controller 永远 <code>ContainerCreating</code>（事件是 <code>MountVolume.SetUp failed: secret not found</code>）。</li>
+<li><strong>本机通、跨节点不通</strong>：某台节点 kube-proxy 规则没同步（回滚遗留），表现为该节点的 NodePort 超时。重启该节点 kube-proxy 即可。</li>
+<li><strong>NodePort 端口每次重建都变</strong>：别把 31123 写死进 D 机 Nginx，每次都以 <code>kubectl get svc</code> 为准。</li>
+<li><strong><code>dnf install nginx</code> 后服务不会自动启动</strong>：curl 返回 <code>000</code>（连接被拒＝没进程监听 80）。补 <code>systemctl enable --now nginx</code>。</li>
+<li><strong>两层 Nginx 搞混 / 丢 Host 头</strong>：D 机 Nginx 少了 <code>proxy_set_header Host $host;</code>，Ingress 就匹配不到 <code>todo.local</code>，返回默认 404。</li>
+<li><strong>忘配 hosts / 加错地方</strong>：浏览器直接输 <code>todo.local</code> 解析不了，先确认 Windows hosts 加了 <code>192.168.80.22 todo.local</code>；改 hosts 必须用<strong>管理员</strong>记事本（从管理员 cmd 敲 <code>notepad 路径</code>，别双击文件）。</li>
+<li><strong>回滚只回一半（最贵的一个坑）</strong>：只回滚 master、worker 不回滚 → Calico IP 分配与真实 Pod 对不上 → 新 Pod <code>no route to host</code>，老 Pod 正常。见开头“头号铁律”。</li>
+</ul>
+</div>
+
+<div class="box verify" data-page-node-id="KFjsYrllqwY2lQhFmFHkXj">
+<strong data-page-node-id="g9eE0vCzeHRAVpP30G9oUF">验收标准</strong>：宿主机浏览器打开 <code data-page-node-id="nyTqMRiRko3ukZF7o93a2U">http://todo.local</code>，能看到待办应用页面（能增删待办、刷新后数据还在）。<code class="hl-green">2026-10-13 已验收通过 ✅</code><br data-page-node-id="D7n786XsjrAXEPX23U8KuX">
+<strong data-page-node-id="qI64foIV6ts5TC2FFEkNtH">打快照</strong>：命名「Day7-域名可访问」。<strong>关机后打、别勾“保存内存状态”</strong>。
+</div>
+
+<h2><span class="day">09</span>Day 8　打通 CI/CD 流水线（项目的灵魂）</h2>
+<p class="goal">今天做完，这个项目才算"活"了：改一行代码 push 上去，不用点任何按钮，3 分钟内线上生效。整条链路：<strong>GitHub(源码) → Jenkins(调度台) → Docker(造镜像) → Harbor(存镜像) → K8s(上线)</strong>。前半段（Jenkins+Docker）是 CI 持续集成，后半段（Harbor+K8s）是 CD 持续交付/部署。</p>
+
+<div class="box ok">
+<strong>实测值速查（Day 8 落地）</strong>
+<table>
+<tr><th>项</th><th>取值</th></tr>
+<tr><td>代码仓库</td><td><strong>GitHub</strong>（不用 Gitee）：<code>https://github.com/stupidxiongxiong/todo-app</code>，public；A 机 git 协议实测可达</td></tr>
+<tr><td>JDK</td><td><code>dnf install -y java-21-openjdk</code> 后软链 <code>ln -sfn /usr/lib/jvm/java-21-openjdk /soft/java/jdk-21</code>；<code>java -version</code>=21.0.12.1</td></tr>
+<tr><td>Jenkins</td><td>war=<code>/soft/java/jenkins.war</code>（<strong>2.580.1，必须 JDK21</strong>）；<strong>systemd 服务化</strong>自启，单元 <code>/etc/systemd/system/jenkins.service</code>，<code>User=root</code>、<code>Restart=always</code>、<code>-Xmx512m</code>；监听 <code>:8080</code>。旧版备份 <code>jenkins.war.2.479.3.bak</code></td></tr>
+<tr><td>初始密码</td><td><code>/root/.jenkins/secrets/initialAdminPassword</code>（解锁向导用，建完管理员即失效）</td></tr>
+<tr><td>推送凭证</td><td>GitHub 用 <strong>PAT 当密码</strong>（2021 起禁用账号密码）；remote 用交互式输密码，<strong>别把 token 写进 remote URL</strong></td></tr>
+<tr><td>构建机</td><td>A 机 docker 29.x 可用，<code>harbor.local</code> 解析到 192.168.80.20（Harbor 那台）</td></tr>
+<tr><td>镜像命名</td><td><code>harbor.local/pb/app:&lt;BUILD_NUMBER&gt;</code>（tag 用 Jenkins 构建号）</td></tr>
+<tr><td>触发</td><td><strong>Poll SCM</strong> <code>*/1 * * * *</code>（每分钟轮询 GitHub，有变动才构建）</td></tr>
+</table>
+</div>
+
+<h3>步骤</h3>
+<ol>
+<li><strong>A 机基础环境：JDK21 + Jenkins 服务化 + Git + Docker + kubectl</strong>
+  <p><b>操作：</b></p>
+  <ul>
+    <li>JDK：<code>dnf install -y java-21-openjdk</code>；软链 <code>ln -sfn /usr/lib/jvm/java-21-openjdk /soft/java/jdk-21</code></li>
+    <li>Jenkins：华为源取 <code>war-stable/latest</code>（2.580.1）覆盖 <code>/soft/java/jenkins.war</code>；建 <code>/etc/systemd/system/jenkins.service</code>（<code>Environment=JENKINS_HOME=/root/.jenkins</code>、<code>ExecStart=/soft/java/jdk-21/bin/java -Xmx512m -jar /soft/java/jenkins.war --httpPort=8080</code>、<code>User=root</code>、<code>Restart=always</code>）→ <code>systemctl daemon-reload &amp;&amp; systemctl enable --now jenkins</code></li>
+    <li>kubectl：本环境走 <code>scp root@192.168.80.20:/usr/bin/kubectl /usr/local/bin/kubectl</code>（B 机有、版本对齐集群；别走外网下载）</li>
+  </ul>
+  <p><b>注意：</b>①<strong>升级顺序别反</strong>——Jenkins 2.580.1 强制 JDK21，拿旧 JDK17 起新 war 会报 <code>minimum required version (Java 21)</code>；务必先升 JDK 再升 Jenkins。②本环境 Jenkins 以 <strong>root</strong> 运行，手册里"把 jenkins 用户加入 docker 组"这步<strong>跳过</strong>（root 已具备 docker 权限）。</p>
+</li>
+<li><strong>Jenkins 向导 + 插件</strong>
+  <p><b>操作：</b></p>
+  <ul>
+    <li>浏览器 <code>http://192.168.80.10:8080</code> → 取初始密码解锁 → <strong>Install suggested plugins</strong> → 建管理员</li>
+    <li>补两个必需插件：<strong>Docker Pipeline</strong>、<strong>Kubernetes CLI</strong>（Manage Jenkins → Plugins → Available 搜装，重启）</li>
+  </ul>
+  <p><b>注意：</b>①若向导卡红叉/显示"离线"，是更新源问题——改 <code>/root/.jenkins/hudson.model.UpdateCenter.xml</code> 源为华为云 <code>https://mirrors.huaweicloud.com/jenkins/update-center.json</code>（<strong>无 /updates/ 段</strong>），并<strong>必须清缓存</strong>：<code>rm -f /root/.jenkins/updates/default.json</code> 后重启，否则 24h 内仍用旧官方 URL 下载失败。②<code>Failed to start Jetty</code> 真因缺字体 → <code>dnf install -y fontconfig</code>（或启动加 <code>-Djava.awt.headless=true</code>）。③手动丢 <code>.jpi</code> 装插件，<strong>依赖必须带齐</strong>，否则整串 <code>Failed to load</code> 连锁（docker-workflow 依赖 docker-commons/docker-java-api，后者还要 authentication-tokens/commons-compress-api/apache-httpcomponents-client-5-api；kubernetes-cli 依赖 kubernetes-credentials）。最稳：从已改写的源一次性拉齐全部依赖，别只丢一个。</p>
+</li>
+<li><strong>三条凭证（Manage Jenkins → Credentials → System → Global → Add Credentials）</strong>
+  <p><b>操作：</b></p>
+  <ul>
+    <li><code>github-pat</code>：Kind=<strong>Username with password</strong>，Username=<code>stupidxiongxiong</code>，Password=GitHub PAT，ID=<code>github-pat</code></li>
+    <li><code>harbor-creds</code>：Kind=Username with password，Username=<code>admin</code>，Password=<code>&lt;your_lab_password&gt;</code>，ID=<code>harbor-creds</code></li>
+    <li><code>k8s-kubeconfig</code>：Kind=<strong>Secret file</strong>，上传 kubeconfig 文件，ID=<code>k8s-kubeconfig</code></li>
+  </ul>
+  <p><b>注意：</b>①<strong>凭据本身不含"属于哪个网站"</strong>——它只是把秘密按 ID 存进凭据库；真正"开哪扇门"由流水线里 <code>URL + credentialsId</code> 成对指定（阶段① git+github-pat、④ docker.withRegistry+harbor-creds、⑤ withKubeConfig+k8s-kubeconfig）。②<code>k8s-kubeconfig</code> 的文件<strong>先要从 B 机拷</strong>：<code>scp root@192.168.80.20:/root/.kube/config /c/Users/one/Desktop/linux/kubeconfig</code>（B 机 kubeconfig 的 server 已是 <code>https://192.168.80.20:6443</code>，A↔B 同网段可达，不用改地址），再在 Jenkins 上传。③A 机本地 <code>/root/.kube/config</code> 是个目录、无法直接 <code>kubectl</code>；K8s 操作由 Jenkins 的 <code>k8s-kubeconfig</code> 凭据完成，正常。</p>
+</li>
+<li><strong>建 Pipeline 任务 + 写 Jenkinsfile 五阶段</strong>
+  <p><b>操作：</b>首页 <strong>New Item</strong> → 名称 <code>todo-pipeline</code> → 类型 <strong>Pipeline</strong> → OK → 滚到 Pipeline 段，定义选 <strong>Pipeline script</strong>，把下面脚本整段粘进"脚本"框；<strong>取消勾选"使用 Groovy 沙盒"</strong>；保存。</p>
+  <pre><code>pipeline {
+    agent any
+    environment {
+        REGISTRY = 'harbor.local'
+        PROJECT  = 'pb'
+        APP      = 'app'
+    }
+    stages {
+        stage('① 拉取代码') {
+            steps { git branch: 'main', url: 'https://github.com/stupidxiongxiong/todo-app.git', credentialsId: 'github-pat' }
+        }
+        stage('② 静态检查') {
+            steps { sh "docker run --rm -v ${WORKSPACE}:/src -w /src python:3.11-slim python -m py_compile app.py" }
+        }
+        stage('③ 构建镜像') {
+            steps { script {
+                env.IMAGE_TAG  = "${BUILD_NUMBER}"
+                env.IMAGE_FULL = "${REGISTRY}/${PROJECT}/${APP}:${IMAGE_TAG}"
+                sh "docker build -t ${IMAGE_FULL} ."
+            } }
+        }
+        stage('④ 推送 Harbor') {
+            steps { script {
+                docker.withRegistry("https://${REGISTRY}", 'harbor-creds') { docker.image(env.IMAGE_FULL).push() }
+            } }
+        }
+        stage('⑤ 更新 K8s 镜像版本') {
+            steps { withKubeConfig([credentialsId: 'k8s-kubeconfig']) {
+                sh "kubectl -n todo set image deployment/app app=${IMAGE_FULL}"
+                sh "kubectl -n todo rollout status deployment/app --timeout=60s"
+            } }
+        }
+    }
+}</code></pre>
+  <p><b>注意：</b>①<strong>取消 Groovy 沙盒后首次构建会报 <code>UnapprovedUsageException</code></strong>——去 Manage Jenkins → <strong>In-process Script Approval</strong> → 把待批准脚本 <strong>Approve</strong> 一次即可（之后改 Jenkinsfile 内容会再触发一次）。②<strong>阶段④前置</strong>：A 机 docker 必须信任 <code>harbor.local</code> 自签证书，否则 push 报 x509——在 <code>/etc/docker/daemon.json</code> 加 <code>"insecure-registries":["harbor.local"]</code>（保留原有 <code>registry-mirrors</code>/<code>exec-opts</code>）→ <code>systemctl restart docker</code>。③阶段⑤的容器名须是 <code>app</code>（与 K8s deployment 一致）。</p>
+</li>
+<li><strong>General 设置 + 触发</strong>
+  <p><b>操作：</b></p>
+  <ul>
+    <li>General 段勾 <strong>Discard old builds</strong>，<code>Max # of builds to keep = 10</code>（A 机磁盘紧，Poll SCM 每分钟一次，构建记录会飞快堆积）</li>
+    <li>勾 <strong>Do not allow concurrent builds</strong>（有构建在跑时新触发直接跳过，避免并发抢 docker/端口）</li>
+    <li>Build Triggers 段勾 <strong>Poll SCM</strong>，Schedule 填 <code>*/1 * * * *</code></li>
+  </ul>
+</li>
+<li><strong>验收（闭环）</strong>
+  <p><b>操作：</b>在 A 机 <code>/soft/app</code> 改 <code>app.py</code> → <code>git add app.py &amp;&amp; git commit -m "..." &amp;&amp; git push origin main</code>（push 前若落后 GitHub 先 <code>git pull --rebase</code>）；<strong>不点 Build Now</strong>。</p>
+  <p><b>注意：</b>①Poll SCM <strong>只在"有变动"时才构建</strong>——push 后 ≤1 分钟，任务页左侧自动冒出新构建号；约 2~3 分钟五阶段跑完。②刷新 <code>http://todo.local</code>：看到<strong>蓝顶栏 + 右上 <code>v2.0</code> 徽标 + "共 X 条，已完成 Y 条"</strong> = 真 v2 上线。③GitHub 网页改或 A 机 push 都行，效果相同。④若 push 被拒（non-fast-forward），先 <code>git stash</code>（无改动可跳过）→ <code>git pull --rebase origin main</code> → <code>git stash pop</code>（冲突保留 v2）→ 再 add/commit/push。</p>
+</li>
+</ol>
+
+<div class="box danger">
+<strong>今天会踩的坑（精炼）</strong>
+<ul>
+<li><strong>Failed to start Jetty</strong>：真因缺 fontconfig/字体，<code>dnf install -y fontconfig</code> 解决。</li>
+<li><strong>插件一片红叉 / 显示离线</strong>：更新源问题。换华为云源（无 /updates/ 段）+ <strong>清 <code>updates/default.json</code> 缓存</strong>再重启，否则 24h 内不生效。</li>
+<li><strong>手动丢 .jpi 装插件</strong>：依赖必须带齐，否则整串 <code>Failed to load</code> 连锁。</li>
+<li><strong>推送 Harbor 报 x509</strong>：A 机 docker 未信任 <code>harbor.local</code>，加 <code>insecure-registries</code> 重启 docker。</li>
+<li><strong>k8s-kubeconfig 来源</strong>：先 <code>scp</code> B 机 <code>/root/.kube/config</code> 到 Windows 再上传；A 机本地 <code>~/.kube/config</code> 是目录，直接 kubectl 会报 "is a directory"。</li>
+<li><strong>Webhook 打不到内网</strong>：NAT/桥接都是内网，GitHub 回调进不来，<strong>用 Poll SCM</strong> 即可，别死磕；有余力再搞内网穿透。</li>
+<li><strong>升级顺序反</strong>：Jenkins 2.580.1 强制 JDK21，先升 JDK 再升 Jenkins，否则起不来。</li>
+</ul>
+</div>
+
+<div class="box verify">
+<strong>验收标准（项目的一条）</strong>：改一行代码 push 到 GitHub，<strong>不点任何按钮</strong>，3 分钟内 <code>http://todo.local</code> 页面内容发生变化（CI→Harbor→K8s 全链路通）。<br>
+<strong>打快照</strong>：命名「Day8-打通」。关机后打、别勾"保存内存状态"。
+</div>
+<h2 data-page-node-id="4pVVhinasXjZIfYLqg9CLU"><span class="day" data-page-node-id="K7buPCl2m5iDTt04Y7lFVW">10</span>Day 9　监控与告警 + Kubernetes Dashboard</h2>
+<p class="goal">给系统装"眼睛"（Prometheus + Grafana + Alertmanager），修掉默认告警噪声，并把可视化操作台 Dashboard 也拿下。比原计划多了 Dashboard（用户拍板并入 Day 9）。</p>
+
+<h3>阶段一览（勾完即收货）</h3>
+<ul class="chk">
+<li><input type="checkbox"> ① 装监控栈：B 机 helm 本地 tgz 装 kube-prometheus-stack</li>
+<li><input type="checkbox"> ② Grafana 取密码 + 切中文 + 导入看板 315/3119 看曲线</li>
+<li><input type="checkbox"> ③ 修 4 个控制面 metrics → 12 条告警清零（Watchdog 除外）</li>
+<li><input type="checkbox"> ④ grafana.local 暴露（Ingress + D 机 Nginx + Windows hosts）</li>
+<li><input type="checkbox"> ⑤ 装 Kubernetes Dashboard（git clone 绕过封锁 + SA/CRB + 长效 token）</li>
+</ul>
+
+<h3>本次实测值速查（2026-10-15/16 实测）</h3>
+<table>
+<tr><th>项</th><th>值</th></tr>
+<tr><td>helm 位置</td><td>B 机(master 192.168.80.20) <code>/usr/local/bin/helm</code>；<strong>A 机无 helm</strong></td></tr>
+<tr><td>release / ns / chart</td><td><code>monitoring</code> / <code>monitoring</code> / <code>kube-prometheus-stack-92.7.0</code>（app v0.94.1）</td></tr>
+<tr><td>本地 helm 包</td><td><code>/soft/kp.tgz</code>（kube-prometheus-stack-92.7.0.tgz，curl 从 GitHub 下载）</td></tr>
+<tr><td>grafana Service</td><td>默认 <code>port 80 → targetPort grafana(3000)</code>；已改 <code>port: 3000</code>（去重号，与 app 对称）</td></tr>
+<tr><td>ingress-nginx</td><td>svc <code>ingress-nginx-controller</code>（ns ingress-nginx），NodePort <code>80:31123</code></td></tr>
+<tr><td>D 机(worker2)</td><td>192.168.80.22，OS Nginx <code>:80</code>，conf.d: <code>todo.conf</code> / <code>grafana.conf</code></td></tr>
+<tr><td>Grafana 登录</td><td>账号 <code>admin</code>；密码从 Secret 取（用户已改为 <code>&lt;your_lab_password&gt;</code>）；非 prom-operator</td></tr>
+<tr><td>Dashboard</td><td>ns <code>kubernetes-dashboard</code>，v2.7.0，svc NodePort <code>443:30607</code></td></tr>
+</table>
+
+<h3>① 装监控栈（B 机 master）</h3>
+<ol>
+<li>helm 只在 B 机：<code>which helm</code> 确认在 <code>/usr/local/bin/helm</code>，A 机敲会"未找到命令"。</li>
+<li><strong>用本地 tgz 安装/升级最稳</strong>（别碰 repo）：
+<pre><code>curl -sSL -o /soft/kp.tgz https://github.com/prometheus-community/helm-charts/releases/download/kube-prometheus-stack-92.7.0/kube-prometheus-stack-92.7.0.tgz
+helm install monitoring /soft/kp.tgz -n monitoring --create-namespace -f /root/mon-values.yaml</code></pre>
+升级：<code>helm upgrade monitoring /soft/kp.tgz -n monitoring -f /root/mon-values.yaml</code></li>
+<li><strong>为什么不用 <code>helm upgrade 别名/图表</code>？</strong> 当初就是本地 tgz 装的，<code>repositories.yaml</code> 从没 <code>helm repo add</code> 过 → <code>Error: repo prometheus-community not found</code>。要解决要么继续用本地 tgz，要么先 <code>helm repo add prometheus-community https://prometheus-community.github.io/helm-charts</code> + <code>helm repo update</code>。</li>
+<li>values 基线用 <code>helm get values monitoring -n monitoring &gt; /root/mon-values.yaml</code> 导出（别用 <code>helm get all</code>，会带分段标题）。</li>
+</ol>
+
+<h3>② Grafana 登录与看板</h3>
+<ol>
+<li><strong>密码不是 prom-operator</strong>，是 chart 生成的随机串，存在 Secret：
+<pre><code>kubectl -n monitoring get secret monitoring-grafana -o jsonpath='{.data.admin-password}' | base64 -d; echo</code></pre>
+（改密码后此 Secret 旧值失效，须自记新密码）</li>
+<li>中文 UI：头像 → Preferences → Language → 中文(简体)。</li>
+<li>导入看板：左边 ☰ → Dashboards → Import，填 <code>315</code>(节点) / <code>3119</code>(K8s 集群)；看 Compute Resources / Nodes 的 CPU、内存曲线。</li>
+</ol>
+
+<h3>③ 修告警（12 条 → 仅剩 Watchdog）</h3>
+<p>根因：4 个控制面组件的 metrics 端口默认绑 <code>127.0.0.1</code>，Prometheus 抓不到 → 一堆 TargetDown / InstanceUnreachable。逐个改 <code>0.0.0.0</code>：</p>
+<pre><code># ① kube-proxy（ConfigMap，低风险）
+kubectl -n kube-system get cm kube-proxy -o yaml | sed 's|metricsBindAddress: ""|metricsBindAddress: "0.0.0.0:10249"|' | kubectl replace -f -
+kubectl -n kube-system rollout restart ds kube-proxy
+
+# ② scheduler（静态 Pod，先备份）
+cp /etc/kubernetes/manifests/kube-scheduler.yaml /root/kube-scheduler.yaml.bak
+sed -i 's|--bind-address=127.0.0.1|--bind-address=0.0.0.0|' /etc/kubernetes/manifests/kube-scheduler.yaml
+
+# ③ controller-manager（同上）
+cp /etc/kubernetes/manifests/kube-controller-manager.yaml /root/kube-controller-manager.yaml.bak
+sed -i 's|--bind-address=127.0.0.1|--bind-address=0.0.0.0|' /etc/kubernetes/manifests/kube-controller-manager.yaml
+
+# ④ etcd（高风险！必备份）
+cp /etc/kubernetes/manifests/etcd.yaml /root/etcd.yaml.bak
+sed -i 's|--listen-metrics-urls=http://127.0.0.1:2381|--listen-metrics-urls=http://0.0.0.0:2381|' /etc/kubernetes/manifests/etcd.yaml</code></pre>
+<p>etcd 改完会让 apiserver 瞬时抖动（kubectl 短暂无响应），约 1 分钟自愈，<strong>别慌、别回滚</strong>。修完从 Prometheus 看 4 类目标 <code>up</code>，Alertmanager 仅剩 Watchdog 1 条 = 验收通过。</p>
+
+<h3>④ grafana.local 暴露（D 机 + Windows）</h3>
+<ol>
+<li>B 机建 Ingress：
+<pre><code>cat > /root/grafana-ingress.yaml <<'EOF'
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: grafana.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: monitoring-grafana
+            port:
+              number: 3000        # 与 grafana Service 端口一致（改前是 80）
+EOF
+kubectl apply -f /root/grafana-ingress.yaml</code></pre></li>
+<li>D 机(192.168.80.22)建 <code>/etc/nginx/conf.d/grafana.conf</code>：
+<pre><code>server {
+    listen 80;
+    server_name grafana.local;
+    location / {
+        proxy_pass http://127.0.0.1:31123;   # ingress-nginx 的 NodePort
+        proxy_set_header Host $host;          # 关键：透传域名给 ingress 路由
+    }
+}</code></pre>
+<code>nginx -t &amp;&amp; systemctl reload nginx</code></li>
+<li>Windows 用管理员记事本开 <code>C:\Windows\System32\drivers\etc\hosts</code>，加：<br><code>192.168.80.22 grafana.local</code></li>
+<li>浏览器开 <code>http://grafana.local</code> 验证。</li>
+</ol>
+
+<h3>⑤ 装 Kubernetes Dashboard（v2.7.0）</h3>
+<ol>
+<li><strong>网络坑</strong>：<code>raw.githubusercontent.com</code> 被按 SNI 重置，但 <code>github.com</code> 主域通。走 git clone 绕过：
+<pre><code>git clone --depth 1 --branch v2.7.0 https://github.com/kubernetes/dashboard.git /root/dashboard
+kubectl apply -f /root/dashboard/aio/deploy/recommended.yaml</code></pre></li>
+<li>等两 Pod Running；镜像 <code>kubernetesui/dashboard</code> / <code>metrics-scraper</code> 走 docker.io（daocloud 镜像源可达）。</li>
+<li>建管理员账号：
+<pre><code>kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF</code></pre></li>
+<li>暴露 + 取 token：
+<pre><code>kubectl -n kubernetes-dashboard patch svc kubernetes-dashboard -p '{"spec":{"type":"NodePort"}}'
+kubectl -n kubernetes-dashboard get svc kubernetes-dashboard   # 记 443:3xxxx
+kubectl -n kubernetes-dashboard create token admin-user            # 短期(1h)
+kubectl -n kubernetes-dashboard create token admin-user --duration=8760h   # 长效(1年)</code></pre></li>
+<li>浏览器 <code>https://&lt;任一节点IP&gt;:3xxxx</code>（如 192.168.80.22:30607）→ 接受自签证书 → 选 Token 粘贴登录。<strong>NodePort 即持久，VM 冷起仍可达</strong>，无需 nginx。</li>
+</ol>
+
+<h3>概念辨析（知其所以然）</h3>
+<ul>
+<li><strong>暴露端口 vs 反向代理 正交</strong>：docker <code>-p</code> / NodePort / 直接监听 只管"流量怎么进"；nginx / ingress 反向代理管"进来后怎么分发/改写/TLS 终结"。两者不是一回事。</li>
+<li><strong>浏览器只碰 80</strong>：<code>http://域名</code> 默认 80，<code>5000</code>/<code>3000</code> 是 K8s 内部 Service/容器端口，被代理"翻译"掉了，跟浏览器无关。<strong>Service 端口 ≠ 容器端口</strong>（grafana Svc 80→容器 3000）。</li>
+<li><strong>.local 是装饰，Harbor 不是</strong>：grafana/todo/dashboard 的 .local 仅为人看 Web UI，纯 NodePort 直连 <code>IP:端口</code> 也行；Harbor 的 <code>harbor.local</code> 焊死在镜像 tag 与自签证书 SAN 里，改名代价大，保留。</li>
+<li><strong>虚拟主机（你做过）vs TLS 终结（你没配）</strong>：D 机 Nginx <code>server_name xxx.local</code> = 基于域名的虚拟主机（单 :80 按 Host 头分流），你配过；TLS 终结 = 代理层持证书在 443 解密，你只"用过结果"（Harbor/Dashboard 的 HTTPS 是它们自己做的），Nginx 全站仍是 :80 HTTP 前端。</li>
+</ul>
+
+<h3>新学</h3>
+<p><span class="tag t-a">Prometheus 拉取模型</span> <span class="tag t-a">Grafana dashboard</span> <span class="tag t-a">告警规则与 Alertmanager</span> <span class="tag t-a">nodeSelector 调度</span> <span class="tag t-a">ingress 反向代理</span> <span class="tag t-a">虚拟主机</span> <span class="tag t-a">NodePort 暴露</span> <span class="tag t-a">RBAC / ServiceAccount</span></p>
+
+<div class="box warn">
+<strong>今天会踩的坑（全实测）</strong>
+<ul>
+<li><strong>Grafana 密码不是 prom-operator</strong>：chart 随机生成，存 Secret，从 Secret 取；改密码后 Secret 旧值失效。</li>
+<li><strong>helm upgrade 报 repo not found</strong>：本地 tgz 安装不会写 repo 书签。继续用 <code>helm upgrade monitoring /soft/kp.tgz</code>，或先 <code>helm repo add</code>。</li>
+<li><strong>values YAML 缩进</strong>：<code>service:</code> 必须与 <code>nodeSelector:</code> 同缩进（2 格）挂在 <code>grafana:</code> 下，缩进错 helm 直接报错。</li>
+<li><strong>grafana Service 改端口必同步 Ingress</strong>：Svc 改 3000，Ingress 的 <code>port.number</code> 也要改 3000，否则 ingress 指向已消失的 80 → grafana.local 挂。</li>
+<li><strong>nodeSelector 对 prometheus/alertmanager 不生效</strong>：mon-values 里这两段路径少一层 <code>prometheusSpec</code>，helm 没注入；Operator 管理的 Pod 要用 <code>kubectl patch prometheus/alertmanager ...</code> CR。学习环境可暂不修（留 worker1 不影响功能）。</li>
+<li><strong>Dashboard raw 域被墙</strong>：用 git clone（github.com 主域）绕过 raw 子域 SNI 重置；不要 <code>kubectl apply -f https://raw.githubusercontent.com/...</code>。</li>
+<li><strong>etcd 修复会触发 apiserver 瞬时抖动</strong>：kubectl 短暂无响应，约 1 分钟自愈，别回滚。</li>
+</ul>
+</div>
+
+<div class="box verify">
+<strong>验收标准</strong>：
+<ul>
+<li>Grafana <code>http://grafana.local</code> 能登录、看板 315/3119 有节点/Pod 曲线。</li>
+<li>Alertmanager 仅剩 <code>Watchdog</code> 1 条（其余 12 条告警清零）。</li>
+<li>Kubernetes Dashboard <code>https://192.168.80.22:30607</code> 用 token 能进控制台。</li>
+</ul>
+<strong>打快照</strong>：命名「Day9-监控+Dashboard 就绪」。
+</div>
+
+<h2 data-page-node-id="RDyT9JQlzA1gIRoPlYPXSL"><span class="day" data-page-node-id="UysvB031PTSb2aKddeC1Vz">11</span>Day 10　收尾：把经历变成面试素材</h2>
+<p class="goal" data-page-node-id="rBPBGAgYm5L3wCHkDuaOGG">项目跑通只是半成品，能讲出来才是作品。</p>
+
+<h3 data-page-node-id="t31zvGLLEidIpVN7XLuo69">步骤</h3>
+<ul class="chk" data-page-node-id="94Fx8ZgNHPGeZcgkYOo3Bc">
+<li data-page-node-id="45bOdVxcHeB6gd9law8rBS"><input type="checkbox" data-page-node-id="H9zD4EMwBH7C1aPBVSY44v"> 截图归档：流水线执行过程、Grafana 仪表盘、应用页面、<code data-page-node-id="cAlTYb1uUo8uo0X8nWv2H0">kubectl get all -n todo</code> 输出</li>
+<li data-page-node-id="dfvsixYMjfmCCJQWBkAyW1"><input type="checkbox" data-page-node-id="DvfQU2yC69p2zIOx2N8HpR"> 写部署文档：每步做了什么、关键配置值</li>
+<li data-page-node-id="xCKgtqzJNQ3no9xy9nOXYd"><input type="checkbox" data-page-node-id="y2haKGGeCY0jfk8B8Ui04Z"> 整理踩坑笔记：<strong data-page-node-id="iYsjQgzBpWACrXAyvOTdhC">报错原文 → 原因 → 排查命令 → 解决办法</strong>，这是面试含金量最高的部分</li>
+<li data-page-node-id="0Sdeng09kdtQ2ifGN4yJhz"><input type="checkbox" data-page-node-id="FFoBSlxLNrXT44DLa1rnrX"> 所有脚本、yaml、Jenkinsfile 推到 GitHub 仓库</li>
+<li data-page-node-id="g8MJoqg5tpKGP8C1KrmmNq"><input type="checkbox" data-page-node-id="CRi6vN9zEpe2qR3Zxc48na"> 准备一段 3 分钟的项目介绍：场景 → 架构 → 我做了什么 → 踩过什么坑 → 怎么解决的</li>
+</ul>
+
+<div class="box ok" data-page-node-id="kISw2kE6s4PlchXk4vRkVM">
+<strong data-page-node-id="wlP55BXj8PSAjO4p2BqBQn">面试时最值钱的三个问题，提前想好答案</strong>
+<ol data-page-node-id="taPILuxKXwb9hXyDuavHdm">
+<li data-page-node-id="rrV6d2zoe8LTvjpSJ5vEyH">「为什么要有两层 Nginx？」→ 外层 Nginx 做统一入口和 80 端口收敛，Ingress 做集群内按域名的七层路由。</li>
+<li data-page-node-id="reQqKM8lHmrC9gsW6E7IAm">「MySQL 放 K8s 里数据怎么保证不丢？」→ PVC 保证 Pod 重启数据还在，定时备份 + 恢复演练保证灾难可恢复，两者不是一回事。</li>
+<li data-page-node-id="o2naE7bL6gHHK7WQ4yp1Sh">「Jenkins 是怎么改 K8s 集群的？」→ Jenkins 节点上放 kubeconfig，流水线最后一步用 kubectl 更新 Deployment 的镜像版本，触发滚动更新。</li>
+</ol>
+</div>
+
+<h2>附录　已实测可用的国内源（Rocky 10.2｜2026-09-30 初测 · 2026-10-08 补测镜像源）</h2>
+<p class="goal">这些地址都是我实际 curl 探活过的，抄就行，不用再试错。</p>
+<table>
+<tr><th>用途</th><th>地址</th><th>状态</th></tr>
+<tr><td>系统 base 源</td><td><code>https://mirrors.aliyun.com/rockylinux/10/BaseOS/x86_64/os/</code></td><td>200 ✅（华为云、中科大也有；<strong>清华没有 rocky/10</strong>）</td></tr>
+<tr><td>EPEL 源</td><td><code>https://mirrors.aliyun.com/epel/10/Everything/x86_64/</code></td><td>200 ✅</td></tr>
+<tr><td>epel-release 包</td><td><code>https://mirrors.aliyun.com/epel/epel-release-latest-10.noarch.rpm</code></td><td>200 ✅</td></tr>
+<tr><td>Docker CE</td><td><code>https://mirrors.aliyun.com/docker-ce/linux/centos/10/x86_64/stable/</code></td><td>200 ✅（<strong>官方 download.docker.com 返回 000，不通</strong>）</td></tr>
+<tr><td>Kubernetes</td><td><code>https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.32/rpm/</code></td><td>200 ✅（官方 pkgs.k8s.io 只有 302 跳转）</td></tr>
+<tr><td><strong>容器镜像</strong><br>（docker.io）</td><td><code>swr.cn-north-4.myhuaweicloud.com</code>（已配为 docker 的 registry-mirror）</td><td>200 ✅ 根路径直出 docker.io。<strong>标准 <code>docker pull</code> 已透明</strong>，无需额外命令</td></tr>
+<tr><td>容器镜像<br>（registry.k8s.io）</td><td><code>swr.cn-north-4.myhuaweicloud.com</code>（containerd CRI hosts.toml 镜像）</td><td>200 ✅ 根路径直出。K8s 经 containerd 透明拉取（pause / ingress-nginx 已核实）</td></tr>
+<tr><td>容器镜像<br>（quay.io）</td><td><code>swr.cn-north-4.myhuaweicloud.com</code>（containerd CRI hosts.toml 镜像）</td><td>200 ✅ 根路径直出。K8s 经 containerd 透明拉取（prometheus 系已核实）</td></tr>
+<tr><td>Docker Hub 官方</td><td><code>registry-1.docker.io</code> / <code>auth.docker.io</code></td><td><strong>000 ❌ 完全不通</strong>；公共加速器（1ms.run / daocloud 等）307 跳 Cloudflare CDN，同样不通</td></tr>
+<tr><td>pause 镜像</td><td><code>registry.aliyuncs.com/google_containers/pause:3.10.2</code></td><td>200 ✅ 已写入 4 台 containerd 的 <code>sandbox</code></td></tr>
+</table>
+<div class="box warn">
+<strong>为什么 Rocky 10 不用重装成 9？</strong>一开始计划写的是 Rocky 9，你实际装的是 10.2。我查过：阿里云对 10 的支持齐全（base / EPEL 10 / docker-ce 的 centos/10 全通），K8s 在 6.12 内核上跑 1.32 也没问题。<strong>继续用 10.2，把源路径里的数字记住就行</strong>。
+</div>
+
+<h2 data-page-node-id="Mub8xwyrlaksRkMlSBNkoI">降级策略：卡住时的取舍顺序</h2>
+<p class="goal" data-page-node-id="Wd8YcJvx0zPEJxMgkCeCaq">7~10 天是学习周期不是工期。时间不够时，按下面顺序砍，<strong data-page-node-id="PablQ0StsLUhSa1bTKkvNy">前两项绝不能砍</strong>。</p>
+<table data-page-node-id="AMAZCGxfTnPAGbiGPniZ0p">
+<tr data-page-node-id="5wELx6SwJ0vE2htqv1Lybk"><th data-page-node-id="NWD3FFQcgyfFDm0Fcw7XDk">优先级</th><th data-page-node-id="GeKhUDwOwz24qiwAE0xNKm">内容</th><th data-page-node-id="keUw2iBNSX1EU2gDCc3Kie">卡住时的处理</th></tr>
+<tr data-page-node-id="NsfTBeXqjI15NjUBMJjcaz"><td data-page-node-id="IrKHJvxXgbV5TYSS4LP3oc">必须做</td><td data-page-node-id="o9byDHbOMj7C3NAkDhXECj">Day 1 初始化、Day 5 集群 Ready</td><td data-page-node-id="kM4PLiuqoXCVkanCfAo45G">不能砍，这是地基</td></tr>
+<tr data-page-node-id="Ngsi5iO2I9te5bh81BDH9f"><td data-page-node-id="prlT5xqUek0fKFHChlMFK8">必须做</td><td data-page-node-id="tEFHG8hJD7DYLw87VzuWBD">Day 4 单机跑通应用</td><td data-page-node-id="uo2ODIMSAcVEGRIb2xmTJr">不能砍，否则分不清是应用问题还是 K8s 问题</td></tr>
+<tr data-page-node-id="tf8OyDRfHPrnyeC5RbcsVx"><td data-page-node-id="Ew9Uh1S33tJsFy0C5Aca6R">可延后</td><td data-page-node-id="wpsbrX5GjMznK9dtAKyYix">Day 1 的 Ansible 批量运维</td><td data-page-node-id="eNBU5IB1WEOnPGGGMIC9S2">先手动敲一遍建立肌肉记忆，最后用 Ansible 重做</td></tr>
+<tr data-page-node-id="WNJhLOAl0UEJNSMGQrfylI"><td data-page-node-id="z7KPzqW1y85T3IpOTXn2OG">可降级</td><td data-page-node-id="LfdkktH5kfW2PBgNlQad5m">Day 9 告警邮件</td><td data-page-node-id="s8YptrgDGHWA8rm1ELTRhE">只做 Prometheus + Grafana 看板，告警先跳过</td></tr>
+<tr data-page-node-id="BvWl7GZzeInEEHGxACtGFI"><td data-page-node-id="0NMV5fsCcjcqgPt3ud1REZ">可降级</td><td data-page-node-id="3CxdUwOnCCpjb1VQt6HnNv">Day 8 代码仓库 Webhook</td><td data-page-node-id="xVxcu8ILNa9lEnx5kX2ao8">用 Poll SCM 轮询即可，内网穿透最后再说</td></tr>
+<tr data-page-node-id="38gcxCx6iwnOG5kvboUlOv"><td data-page-node-id="mmWJqNQYqqxwwLDixydG3m">可降级</td><td data-page-node-id="9LmQF8OgfFH18RCCePL4f6">Day 7 D 机外层 Nginx</td><td data-page-node-id="4agCHbStdlEHxXDI4Avfv1">直接用 Ingress 的 NodePort + hosts 访问也能演示</td></tr>
+</table>
+
+<div class="box danger" data-page-node-id="ZHbfTWgIdP6kaFsozLuDyz">
+<strong data-page-node-id="FyhmN4210RKvoKlKrJbOpD">贯穿全程的三条纪律</strong>
+<ol data-page-node-id="B86sbogNfiXDCcbsI4CxRo">
+<li data-page-node-id="HVUNYmLm2iHbKR5Z8tvjWu"><strong data-page-node-id="JUNdVNd4yhTADfeqpUqnGB">每天结束打快照</strong>。崩了 30 秒回滚，这是你敢动手的唯一保险。</li>
+<li data-page-node-id="pTzmM2uIKAKAJTCOFp1GeJ"><strong data-page-node-id="U1wXACwKrPLYGhflLSjrvg">单点卡超过 3 小时就停</strong>。换个时间带着清醒脑子重试，或按上面的降级表先绕过去。</li>
+<li data-page-node-id="f8P6c9QUEdLOTyOjifuHBy"><strong data-page-node-id="l0koUqR1TXlvfN1JzcYiIf">跑虚拟机前退出后台软件</strong>：迅雷、百度网盘、阿里云盘、夸克、360 浏览器、鲁大师、向日葵 —— 要退出托盘，不是关窗口。</li>
+</ol>
+</div>
+
+<p class="small" style="margin-top:30px;border-top:1px solid var(--border);padding-top:14px" data-page-node-id="nClcQZb9fyUtHjU54iVdQG">
+配套：云原生CI-CD架构图.html（机器布局 / CI 流水线 / 请求链路三张图）｜ 宿主机：神舟 NH5x，i5-11260H 6核12线程，32GB 内存，VMware Workstation 17.5<br>
+辅助脚本：<code>change-yum-repo.sh</code>（换源，4 台已执行完成）。<br><span style="color:#b45309">注：原 <code>dpull</code> 脚本已于 2026-10-08 退役——docker.io 改为 daemon.json 无感镜像，k8s.io/quay.io 改由 containerd(CRI) 镜像，标准 <code>docker pull</code> 已可用。源码 <code>scripts/dpull.sh</code> 保留作历史参考。</span><br>
+<strong>版本修订：2026-09-30 按实测环境（Rocky Linux 10.2 / 内核 6.12）更新；2026-10-08 补充镜像源实测结论（Docker Hub 与公共加速器全部失效，改用华为云 SWR）；2026-10-08 终版将镜像源改为<strong>无感方案</strong>（docker 的 registry-mirror + containerd 的 hosts.toml），退役 dpull，标准 <code>docker pull</code> 与官方教程一致</strong>；<strong>2026-10-13 重写 Day 7</strong>——补齐 ingress-nginx 从备镜像到域名验收的完整步骤，并写入本次排查实测的坑（GAR 被墙→离线导入 tar、manifest 的 @sha256 摘要坑、RBAC 补齐后须重启 controller、NodePort 端口浮动、外层 Nginx 必须透传 Host 头、三台必须同源防 IP 泄漏）。已完成的步骤保留原文并打勾，未删除任何内容。<br><strong>2026-10-13 晚 · Day 7 定稿</strong>——按当天完整跑通（B/C/D 三台同源 + 离线 tar + 官方完整版 manifest）的实测结果，把「每一步对应的实测值」和新增坑（<code>@sha256</code> 摘要与本地镜像不一致、<code>dnf install nginx</code> 装完不自启、admission Job 是 controller 的前置、hosts 的管理员打开姿势与多域名不冲突）补齐进 Day 7；并在步骤 ① 写明两个 tar 的来源（Windows 上用 crane 从 k8s.m.daocloud.io 预拉）。另修正文件名中误加的空格。<br><strong>2026-10-13 晚 · Day 6 补全</strong>——Day 6 段落此前只剩一份 7 条干的清单（两次精炼的内容在编辑过程中丢失），本次按 2026-10-12 的真实施工补齐：新增「本次实测值速查」表、「操作精髓（速查）」（含 local-path 安装、<code>harbor-pull</code> 命令建、certs.d 修 x509 的完整命令）、「踩坑实录（2026-10-12 实测）」6 条，并把 7 条步骤各自附上本次实测值、验收标准由一句话扩成 5 步。原有内容一条未删。<br><strong>2026-10-14 · Day 8 更新</strong>——把 Day 8 推进到「JDK+Jenkins 已装启动、代码已推 GitHub」的实测状态：① 代码仓库由 Gitee 改为 GitHub（A 机 git 协议可达、Webhook 两者都打不进内网，先 Poll SCM）；② 新增「本次实测值速查」表（JDK 家 / Jenkins 启动命令 / 初始密码 / PAT 纪律）；③ 坑清单补两条真踩到的——<code>Failed to start Jetty</code> 真因是缺 fontconfig（<code>dnf install -y fontconfig</code>）以及 Jenkins 现为 nohup 进程、VM 重启不自动起（待做 systemd 服务化）；④ 新增「装 kubectl」独立步骤（A 机此前缺 kubectl）。Day 10 与降级表的「Gitee」措辞同步改为 GitHub。<strong>2026-10-14 晚 · Day 8 再升级</strong>——JDK17→JDK21（<code>dnf install java-21-openjdk</code> + <code>/soft/java/jdk-21</code> 软链）、Jenkins 2.479.3→2.580.1（华为 <code>war-stable/latest</code>，强制 JDK21，先升 JDK 再升 war）；systemd 服务化完成（开机自启）；docker/k8s 插件全依赖补齐、无 Failed to load。同步更新「本次实测值速查」表与对应坑（升级顺序、手动丢 .jpi 依赖带齐）。<strong>2026-10-16 · Day 9 重写</strong>——按本次完整跑通（监控栈 helm 本地 tgz 安装/升级、Grafana 密码从 Secret 取、4 控制面 metrics 修复清零 12 条告警、grafana.local 经 Ingress+D 机 Nginx 暴露、Kubernetes Dashboard v2.7.0 经 git clone 绕过 raw 域封锁安装）的实测结果，把 Day 9 扩写为含具体操作命令的施工手册：新增「本次实测值速查」表、「①装监控栈 ②Grafana 登录与看板 ③修告警 ④grafana.local 暴露 ⑤装 Dashboard」五阶段步骤（全带命令）、「概念辨析」（暴露端口 vs 反向代理、Service 端口≠容器端口、.local 装饰 vs Harbor 耦合、虚拟主机 vs TLS 终结）、纠正原「Grafana 密码 prom-operator」错误（实为 Secret 随机串）。原有勾选项保留。
+</p>
+
+</div>
+<script>
+(function(){
+  var KEY='cicd-plan-checks-v1';
+  var boxes=[].slice.call(document.querySelectorAll('input[type=checkbox]'));
+  function keyOf(b,i){ return b.getAttribute('data-page-node-id') || ('idx'+i); }
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ saved={}; }
+  boxes.forEach(function(b,i){
+    var k=keyOf(b,i);
+    if(Object.prototype.hasOwnProperty.call(saved,k)){ b.checked=!!saved[k]; }
+    b.addEventListener('change',function(){
+      saved[k]=b.checked;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+  var d=document.getElementById('done'), t=document.getElementById('total');
+  function update(){
+    var n=boxes.filter(function(b){return b.checked;}).length;
+    if(d) d.textContent=n;
+    if(t) t.textContent=boxes.length;
+  }
+  var r=document.getElementById('reset');
+  if(r) r.addEventListener('click',function(){
+    boxes.forEach(function(b){ b.checked=false; });
+    saved={};
+    try{ localStorage.setItem(KEY,'{}'); }catch(e){}
+    update();
+  });
+  update();
+})();
+</script>
+
+</body>
+</html>
